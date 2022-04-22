@@ -9,3 +9,9 @@ Về code: <br>
 <br>
 Tạo các branch khác nhau để tránh conflict code, đặt tên branch theo tên cá nhân <br>
 VD: trang-newfeeds, trang-navbar,...
+
+Combo color t đang sử dụng là <br>
+Tangerine E37222 
+Teal 07889B
+Powder 66B9BF
+Tan EEAA7B 
