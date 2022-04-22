@@ -10,7 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BaloTravel">
         <activity
+            android:name=".PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".StartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
