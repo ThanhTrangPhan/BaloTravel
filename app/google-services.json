@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "455609816130",
+    "project_id": "balotravel-9a424",
+    "storage_bucket": "balotravel-9a424.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455609816130:android:adb6bcc2de906f9e0689db",
+        "android_client_info": {
+          "package_name": "com.example.balotravel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455609816130-g1jbii1llbm3pt9d0nrfv70easunmsu6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb546F-sXRd9SAFwPn-IHCXQa23AjdixI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455609816130-g1jbii1llbm3pt9d0nrfv70easunmsu6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
