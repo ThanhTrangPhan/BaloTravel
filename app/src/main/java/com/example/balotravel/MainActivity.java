@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_add:
                             selectedFragment = null;
-                            startActivity(new Intent(MainActivity.this,CreateNewJouneyActivity.class));
+                            startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class));
                             break;
                         case R.id.nav_bookmark:
                             selectedFragment = new BookmarkFragment();
