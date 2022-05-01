@@ -24,13 +24,14 @@
                 android:textStyle="bold"
                 android:id="@+id/username"
                 android:textColor="@color/black"/>
+
             <ImageView
+                android:id="@+id/options"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/options"
-                android:src="@drawable/ic_options"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_notifications_24" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -51,7 +52,8 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:id="@+id/image_profile"/>
+                    android:id="@+id/image_profile"
+                    android:src="@drawable/mayman"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,8 +85,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="posts"
-                                />
+                                android:fontFamily="sans-serif"
+                                android:text="Bài viết" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -105,7 +107,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="followers" />
+                                android:fontFamily="sans-serif"
+                                android:text="Người theo dõi" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -126,7 +129,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="following" />
+                                android:text="Đang theo dõi" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -138,7 +141,7 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif"
                         android:includeFontPadding="false"
-                        android:text="Edit Profile" />
+                        android:text="Chỉnh sửa trang cá nhân" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -193,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_save" />
+                    android:src="@drawable/ic_baseline_account_box_24" />
 
             </LinearLayout>
 
