@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/background">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/text"
+                    android:layout_width="289dp"
+                    android:layout_height="73dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="-20dp"
+                    android:src="@drawable/balo_fix" />
+
+
+                <ImageView
+                    android:layout_width="106dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="261dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/logo" />
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+
+            <Button
+                android:id="@+id/btnregis"
+                android:layout_width="242dp"
+                android:layout_height="51dp"
+                android:layout_marginBottom="64dp"
+                android:text="Register"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="298dp"
+                android:layout_height="49dp"
+                android:layout_marginEnd="57dp"
+                android:layout_marginBottom="20dp"
+                android:hint="Email address"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/password"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginBottom="19dp"
+                android:hint="Password"
+                android:inputType="numberPassword"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/btnregis"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+
+
+
+</RelativeLayout>
