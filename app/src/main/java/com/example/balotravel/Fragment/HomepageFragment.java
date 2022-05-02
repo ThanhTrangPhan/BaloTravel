@@ -40,7 +40,7 @@ public class HomepageFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(),postList);
         recyclerView.setAdapter(postAdapter);
-        checkFollowing();
+        //checkFollowing();
         return view;
     }
 
