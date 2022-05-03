@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="365dp"
+            android:layout_height="274dp"
             android:background="@drawable/bg3">
 
 
@@ -25,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar1"
             android:layout_width="match_parent"
-            android:layout_height="510dp">
+            android:layout_height="443dp">
 
 
             <Button
