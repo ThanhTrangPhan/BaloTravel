@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import com.example.balotravel.Fragment.BookmarkFragment;
 import com.example.balotravel.Fragment.HomepageFragment;
@@ -16,16 +19,26 @@ import com.example.balotravel.Fragment.SearchFragment;
 import com.example.balotravel.Fragment.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationMenuView;
     Fragment selectedFragment = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        FloatingActionButton floatingAddBtn = (FloatingActionButton) findViewById(R.id.nav_add_btn);
+//        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class
+//                ));
+//            }
+//        });
+
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
@@ -47,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_search:
                             selectedFragment = new SearchFragment();
                             break;
-                        case R.id.nav_add:
-                            selectedFragment = null;
-                            MainActivity.this.startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class));
-                            break;
+//                        case R.id.nav_add:
+//                            selectedFragment = null;
+//                            MainActivity.this.startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class));
+//                            break;
                         case R.id.nav_bookmark:
                             selectedFragment = new BookmarkFragment();
                             break;
@@ -68,4 +81,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    public void openCNJActivity(View view) {
+        startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class));
+    }
 }

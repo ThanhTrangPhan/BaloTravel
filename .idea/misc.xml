@@ -13,12 +13,14 @@
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.238" />
-        <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.28730226592560926" />
+        <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/fragment_bookmark.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.4069529652351738" />
+        <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog.xml" value="0.1140625" />
+        <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog_item.xml" value="0.1140625" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/fragment_user.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/post_item.xml" value="0.28730226592560926" />
