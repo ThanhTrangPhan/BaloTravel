@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.balotravel.Fragment.BookmarkFragment;
 import com.example.balotravel.Fragment.HomepageFragment;
