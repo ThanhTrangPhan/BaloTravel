@@ -29,15 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        FloatingActionButton floatingAddBtn = (FloatingActionButton) findViewById(R.id.nav_add_btn);
-//        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class
-//                ));
-//            }
-//        });
 
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
@@ -60,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_search:
                             selectedFragment = new SearchFragment();
                             break;
-//                        case R.id.nav_add:
-//                            selectedFragment = null;
-//                            MainActivity.this.startActivity(new Intent(MainActivity.this, CreateNewJouneyActivity.class));
-//                            break;
+
                         case R.id.nav_bookmark:
                             selectedFragment = new BookmarkFragment();
                             break;
