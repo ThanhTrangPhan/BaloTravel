@@ -11,7 +11,8 @@ Tạo các branch khác nhau để tránh conflict code, đặt tên branch theo
 VD: trang-newfeeds, trang-navbar,...
 
 Combo color t đang sử dụng là <br>
-Tangerine E37222 
+Tangerine E37222
+Tan EEAA7B
 Teal 07889B
 Powder 66B9BF
-Tan EEAA7B 
+
