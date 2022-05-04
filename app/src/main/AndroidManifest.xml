@@ -11,6 +11,9 @@
         android:theme="@style/Theme.BaloTravel">
 
         <activity
+            android:name=".CreateNewJouneyActivity"
+            android:exported="true" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
@@ -27,14 +30,17 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBT5Hyl1QUbYmPb2vNsE4-xxJl5K0LDuMk"/>
+<!--             android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts"  -->
+      />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
