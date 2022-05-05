@@ -35,7 +35,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activePlacesView"
         android:layout_width="match_parent"
-        android:layout_height="402dp" />
+        android:layout_height="388dp" />
 
     <Button
         android:id="@+id/saveBtn"

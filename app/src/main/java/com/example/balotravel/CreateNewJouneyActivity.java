@@ -4,6 +4,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
@@ -16,6 +17,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +31,11 @@ import java.util.List;
 
 public class CreateNewJouneyActivity extends AppCompatActivity {
 
+    protected RecyclerView recyclerView;
+    protected RecyclerView.Adapter adapter;
+
     protected EditText editText;
-    protected ArrayList <String> placeList = new ArrayList<String>();
+    protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<com.example.balotravel.Model.Place>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,13 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyBto2FuliFbIADOWHcH3Sf5LcR85_Mjbns");
         }
+        recyclerView = (RecyclerView) findViewById(R.id.activePlacesView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        placeList.add( new com.example.balotravel.Model.Place("Argno94e","Ho Hoan Kiem", "PKX, RDJD"));
+
+        adapter = new PlaceListViewAdapter(placeList, this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -58,8 +70,12 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK ) {
             Place place = Autocomplete.getPlaceFromIntent(data);
             editText.setText(place.getName());
-            placeList.add(place.getName());
+            placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress()));
+            Log.i("Place List:", placeList.get(0).getName());
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerPopupDetailView, new PopupDetailDialogFragment()).commit();
+            adapter = new PlaceListViewAdapter(placeList, this);
+            recyclerView.setAdapter(adapter);
+
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -67,28 +83,3 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
     }
 }
 
-class ProductListViewAdapter extends RecyclerView.Adapter<ProductListViewAdapter.ViewHolder> {
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item);
-        return new ViewHolder(v);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
-}
