@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.view.WindowManager;
+
 
 import com.example.balotravel.Fragment.BookmarkFragment;
 import com.example.balotravel.Fragment.HomepageFragment;
