@@ -20,7 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText emailedit,passedit;
+    private EditText emailedit,passedit,fnameedit,lnameedit;
     private Button btnregis;
     private FirebaseAuth mAuth;
     @Override

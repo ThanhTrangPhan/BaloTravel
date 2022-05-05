@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="wrap_content"
-            android:layout_height="338dp"
+            android:layout_height="189dp"
             android:background="@drawable/bg2">
 
         </androidx.appcompat.widget.Toolbar>
@@ -33,26 +33,28 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="112dp"
                 android:layout_marginEnd="124dp"
-                android:layout_marginBottom="20dp"
-                android:background="#208EBA"
+                android:layout_marginBottom="152dp"
+                android:background="@color/tangerine"
                 android:text="Login"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toTopOf="@+id/btnregis"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/btnregis"
-                android:layout_width="175dp"
-                android:layout_height="54dp"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="112dp"
                 android:layout_marginEnd="124dp"
-                android:layout_marginBottom="132dp"
+                android:layout_marginBottom="100dp"
+                android:background="@color/tangerine"
                 android:text="Register"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -61,12 +63,13 @@
                 android:layout_height="49dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="20dp"
                 android:hint="Email address"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -75,13 +78,35 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="42dp"
-                android:layout_marginBottom="124dp"
+                android:layout_marginBottom="224dp"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/btnregis"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="229dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="85dp"
+                android:layout_marginBottom="19dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageButton3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/button_1" />
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="229dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="85dp"
+                android:layout_marginBottom="22dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnregis"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/btn2" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
