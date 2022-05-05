@@ -1,8 +1,10 @@
 package com.example.balotravel;
 
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -14,6 +16,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -64,57 +67,28 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
     }
 }
 
-class ProductListViewAdapter extends BaseAdapter {
-
-    //Dữ liệu liên kết bởi Adapter là một mảng các sản phẩm
-    final ArrayList<String> listProduct;
-
-    ProductListViewAdapter(ArrayList<String> listProduct) {
-        this.listProduct = listProduct;
+class ProductListViewAdapter extends RecyclerView.Adapter<ProductListViewAdapter.ViewHolder> {
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item);
+        return new ViewHolder(v);
     }
 
     @Override
-    public int getCount() {
-        //Trả về tổng số phần tử, nó được gọi bởi ListView
-        return listProduct.size();
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
     }
 
     @Override
-    public Object getItem(int position) {
-        //Trả về dữ liệu ở vị trí position của Adapter, tương ứng là phần tử
-        //có chỉ số position trong listProduct
-        return listProduct.get(position);
+    public int getItemCount() {
+        return 0;
     }
 
-    @Override
-    public long getItemId(int position) {
-        //Trả về một ID của phần
-        return position;
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
-
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        //convertView là View của phần tử ListView, nếu convertView != null nghĩa là
-//        //View này được sử dụng lại, chỉ việc cập nhật nội dung mới
-//        //Nếu null cần tạo mới
-//
-//        View viewProduct;
-//        if (convertView == null) {
-//            viewProduct = View.inflate(parent.getContext(), R.layout.product_view, null);
-//        } else viewProduct = convertView;
-//
-//        //Bind sữ liệu phần tử vào View
-//        Product product = (Product) getItem(position);
-//        ((TextView) viewProduct.findViewById(R.id.idproduct)).setText(String.format("ID = %d", product.productID));
-//        ((TextView) viewProduct.findViewById(R.id.nameproduct)).setText(String.format("Tên SP : %s", product.name));
-//        ((TextView) viewProduct.findViewById(R.id.priceproduct)).setText(String.format("Giá %d", product.price));
-//
-//
-//        return viewProduct;
-//    }
 }
