@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreateNewJouneyActivity extends AppCompatActivity {
+public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceDetailBottomSheet.BottomSheetListener{
 
     protected RecyclerView recyclerView;
     protected RecyclerView.Adapter adapter;
@@ -47,7 +47,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 List<Place.Field> fieldList = Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setInitialQuery(editText.getText().toString()).setCountry("VN").setHint("Hồ Hoàn Kiếm,...").build(CreateNewJouneyActivity.this);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("VN").setHint("Hồ Hoàn Kiếm,...").build(CreateNewJouneyActivity.this);
                 startActivityForResult(intent, 100);
             }
         });
@@ -57,10 +57,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.activePlacesView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        placeList.add( new com.example.balotravel.Model.Place("Argno94e","Ho Hoan Kiem", "PKX, RDJD"));
-
-        adapter = new PlaceListViewAdapter(placeList, this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -69,17 +65,25 @@ public class CreateNewJouneyActivity extends AppCompatActivity {
 
         if (requestCode == 100 && resultCode == RESULT_OK ) {
             Place place = Autocomplete.getPlaceFromIntent(data);
-            editText.setText(place.getName());
-            placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress()));
+
             Log.i("Place List:", placeList.get(0).getName());
-            //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerPopupDetailView, new PopupDetailDialogFragment()).commit();
-            adapter = new PlaceListViewAdapter(placeList, this);
-            recyclerView.setAdapter(adapter);
+
+            PlaceDetailBottomSheet placeDetailBottomSheet = new PlaceDetailBottomSheet(place);
+            placeDetailBottomSheet.show(getSupportFragmentManager(), "placeDetailBottomSheet");
 
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place) {
+
+        placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress()));
+        adapter = new PlaceListViewAdapter(placeList, this);
+        recyclerView.setAdapter(adapter);
+        Log.i("Place List:", "Clicked");
     }
 }
 
