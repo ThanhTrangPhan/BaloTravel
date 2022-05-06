@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.balotravel.Model.Post;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -14,6 +15,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,6 +40,10 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     protected EditText editText;
     protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<com.example.balotravel.Model.Place>();
+
+    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
+
+    protected Button saveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,16 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         recyclerView = (RecyclerView) findViewById(R.id.activePlacesView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        saveBtn = (Button) findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key = mDatabase.push().getKey();
+                mDatabase.child(key).setValue(new Post("Ha Noi cua toi", "Vo Minh Manh", "", "Mot chuyen di vui ve"));
+                mDatabase.child(key).child("places").setValue(placeList);
+            }
+        });
     }
 
     @Override
@@ -78,11 +96,10 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     @Override
     public void onButtonClicked(com.google.android.libraries.places.api.model.Place place) {
-
-        placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress()));
+        placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress(), place.getLatLng()));
         adapter = new PlaceListViewAdapter(placeList, this);
         recyclerView.setAdapter(adapter);
-        Log.i("Place List:", "Clicked");
+        Log.i("Place List:", place.getLatLng().toString());
     }
 }
 

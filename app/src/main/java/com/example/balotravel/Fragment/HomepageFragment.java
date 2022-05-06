@@ -76,7 +76,7 @@ public class HomepageFragment extends Fragment {
                 for(DataSnapshot _snapshot : snapshot.getChildren()){
                     Post post = _snapshot.getValue(Post.class);
                     for(String id : followingList){
-                        if(post.getPostPublishher().equals(id)){
+                        if(post.getPostPublisher().equals(id)){
                             postList.add(post);
                         }
                     }

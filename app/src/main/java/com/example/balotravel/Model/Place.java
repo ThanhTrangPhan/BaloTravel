@@ -1,24 +1,32 @@
 package com.example.balotravel.Model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Place {
     private String id;
     private String name;
     private String address;
+    private LatLng latLng;
     private String startAt;
     private String finishAt;
 
-    public Place(String id, String name, String address) {
+    public Place(String id, String name, String address, LatLng latLng) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.latLng = latLng;
     }
 
-    public Place(String id, String name, String address, String startAt, String finishAt) {
+    public Place(String id, String name, String address, LatLng latLng, String startAt, String finishAt) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.latLng = latLng;
         this.startAt = startAt;
         this.finishAt = finishAt;
+    }
+
+    public Place() {
     }
 
     public String getId() {
