@@ -52,7 +52,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             }
         });
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyBto2FuliFbIADOWHcH3Sf5LcR85_Mjbns");
+            Places.initialize(getApplicationContext(), "AIzaSyASo146Eo6JzONrNaJ0gZINEvwibfJ-Xqo");
         }
         recyclerView = (RecyclerView) findViewById(R.id.activePlacesView);
         recyclerView.setHasFixedSize(true);
@@ -66,7 +66,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         if (requestCode == 100 && resultCode == RESULT_OK ) {
             Place place = Autocomplete.getPlaceFromIntent(data);
 
-            Log.i("Place List:", placeList.get(0).getName());
 
             PlaceDetailBottomSheet placeDetailBottomSheet = new PlaceDetailBottomSheet(place);
             placeDetailBottomSheet.show(getSupportFragmentManager(), "placeDetailBottomSheet");

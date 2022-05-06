@@ -41,6 +41,7 @@ public class PlaceDetailBottomSheet extends BottomSheetDialogFragment {
         addToPlaceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mListener.onButtonClicked(place);
                 dismiss();
             }
         });
