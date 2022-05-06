@@ -15,6 +15,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -37,10 +38,10 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     protected RecyclerView recyclerView;
     protected RecyclerView.Adapter adapter;
-
+    protected FirebaseAuth mAuth = FirebaseAuth.getInstance();
     protected EditText editText;
     protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<com.example.balotravel.Model.Place>();
-
+    protected EditText edtJourneyDescription;
     protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
 
     protected Button saveBtn;
@@ -66,13 +67,16 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        edtJourneyDescription = (EditText) findViewById(R.id.journeyDescription);
+
         saveBtn = (Button) findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
-                mDatabase.child(key).setValue(new Post("Ha Noi cua toi", "Vo Minh Manh", "", "Mot chuyen di vui ve"));
+                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
                 mDatabase.child(key).child("places").setValue(placeList);
+                Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
             }
         });
     }
