@@ -43,13 +43,15 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<com.example.balotravel.Model.Place>();
     protected EditText edtJourneyDescription;
     protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
-
+    protected Button seeOnMapBtn;
     protected Button saveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_jouney);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         editText = findViewById(R.id.placeInput);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +81,16 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
             }
         });
+
+        seeOnMapBtn = (Button) findViewById(R.id.seeOnMapBtn);
+        seeOnMapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CreateNewJouneyActivity.this, PlaceListOnMapActivity.class));
+            }
+        });
+
+
     }
 
     @Override
@@ -87,7 +99,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
         if (requestCode == 100 && resultCode == RESULT_OK ) {
             Place place = Autocomplete.getPlaceFromIntent(data);
-
 
             PlaceDetailBottomSheet placeDetailBottomSheet = new PlaceDetailBottomSheet(place);
             placeDetailBottomSheet.show(getSupportFragmentManager(), "placeDetailBottomSheet");
