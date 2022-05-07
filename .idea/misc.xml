@@ -7,20 +7,15 @@
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/drawable/ic_baseline_account_box_24.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_edit_profile.xml" value="0.29444444444444445" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_edit_profile2.xml" value="0.19882246376811594" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_main.xml" value="0.18" />
+        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_main.xml" value="1.0" />
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_post.xml" value="0.25" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_bookmark.xml" value="0.25" />
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_home.xml" value="0.11639492753623189" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_search.xml" value="0.15" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_user.xml" value="0.21" />
+        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_user.xml" value="1.0" />
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/post_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/row_posts.xml" value="0.22" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/splashscreen.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/user_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_login.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_register.xml" value="0.20277777777777778" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/face.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.238" />
@@ -30,14 +25,24 @@
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.238" />
+        <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.28730226592560926" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.16502778965369816" />
         <entry key="app/src/main/res/layout/fragment_bookmark.xml" value="0.28730226592560926" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.47191011235955055" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.4069529652351738" />
+        <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog.xml" value="0.1140625" />
+        <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog_item.xml" value="0.1140625" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/fragment_user.xml" value="0.28730226592560926" />
+        <entry key="app/src/main/res/layout/place_detail_bottom_sheet.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/place_item.xml" value="0.165" />
         <entry key="app/src/main/res/layout/post_item.xml" value="0.28730226592560926" />
+        <entry key="app/src/main/res/layout/row_posts.xml" value="0.23958333333333334" />
+        <entry key="app/src/main/res/layout/splashscreen.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.35" />
         <entry key="app/src/main/res/xml/tabs.xml" value="0.28804347826086957" />
       </map>
