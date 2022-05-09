@@ -2,25 +2,43 @@ package com.example.balotravel;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
+import com.example.balotravel.Model.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.balotravel.databinding.ActivityPlaceListOnMapBinding;
+
+import java.util.ArrayList;
 
 public class PlaceListOnMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityPlaceListOnMapBinding binding;
+    protected ArrayList<Place> placeList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        placeList = (ArrayList<Place>) intent.getSerializableExtra("BUNDLE");
         binding = ActivityPlaceListOnMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -28,6 +46,7 @@ public class PlaceListOnMapActivity extends FragmentActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     /**
@@ -41,11 +60,39 @@ public class PlaceListOnMapActivity extends FragmentActivity implements OnMapRea
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap = googleMap;
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        for (Place place: this.placeList) {
+            LatLng sydney = new LatLng(place.getLatitude(), place.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
+//            Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+//            Bitmap bmp = Bitmap.createBitmap(120, 120, conf);
+//            Canvas canvas1 = new Canvas(bmp);
+//
+//// paint defines the text color, stroke width and size
+//            Paint color = new Paint();
+//            color.setTextSize(35);
+//            color.setColor(Color.BLACK);
+//
+//// modify canvas
+//            canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(),
+//                    R.drawable.map_marker), null, new Rect(0,0,120,120), null);
+//            canvas1.drawText("User Name!", 30, 40, color);
+//
+//// add marker to Map
+//            mMap.addMarker(new MarkerOptions()
+//                    .position(sydney)
+//                    .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+//                    // Specifies the anchor to be at a particular point in the marker image.
+//                    .anchor(0.5f, 1));
+//
+
+            builder.include(sydney);
+        }
+        LatLngBounds bounds = builder.build();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
+
     }
 }

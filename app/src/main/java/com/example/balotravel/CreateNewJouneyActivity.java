@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +64,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             }
         });
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyASo146Eo6JzONrNaJ0gZINEvwibfJ-Xqo");
+            //Places.initialize(getApplicationContext(), "AIzaSyASo146Eo6JzONrNaJ0gZINEvwibfJ-Xqo");
+            Places.initialize(getApplicationContext(), "AIzaSyBhj_LHnpq3EGbr5fGHpj0ORcDx7Rb-B_E");
         }
         recyclerView = (RecyclerView) findViewById(R.id.activePlacesView);
         recyclerView.setHasFixedSize(true);
@@ -86,11 +88,11 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         seeOnMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CreateNewJouneyActivity.this, PlaceListOnMapActivity.class));
+                Intent intent = new Intent(CreateNewJouneyActivity.this, PlaceListOnMapActivity.class);
+                intent.putExtra("BUNDLE", placeList);
+                startActivity(intent);
             }
         });
-
-
     }
 
     @Override

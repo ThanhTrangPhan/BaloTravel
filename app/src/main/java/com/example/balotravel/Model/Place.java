@@ -2,7 +2,9 @@ package com.example.balotravel.Model;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Place {
+import java.io.Serializable;
+
+public class Place implements Serializable {
     private String id;
     private String name;
     private String address;
