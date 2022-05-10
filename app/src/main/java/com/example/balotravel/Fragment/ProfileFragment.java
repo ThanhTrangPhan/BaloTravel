@@ -2,6 +2,7 @@ package com.example.balotravel.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,7 +81,7 @@ public class ProfileFragment extends Fragment {
                 bio.setText(currentUser.getBio());
                 fullname.setText(currentUser.getFullname());
                 phoneNum.setText("0" + currentUser.getPhonenumber()+"");
-
+                Glide.with(ProfileFragment.this).load(Uri.parse(currentUser.getImage_profile())).into(image_profile);
             }
 
             @Override

@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.example.balotravel.Model.Image;
 import com.example.balotravel.Model.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +44,7 @@ public class EditProfileActivity extends AppCompatActivity {
     DatabaseReference mData;
     ImageView img;
     User currentUser;
+    boolean isImageClicked =false;
 //    DatabaseReference reference;
 //    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
 //        new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -76,6 +79,7 @@ public class EditProfileActivity extends AppCompatActivity {
        img.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               isImageClicked = true;
                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                startActivityForResult(intent,REQUEST_CODE_IMAGE);
            }
@@ -84,66 +88,80 @@ public class EditProfileActivity extends AppCompatActivity {
        btnUpdate.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Calendar calendar = Calendar.getInstance();
-               StorageReference mountainsRef;
-               mountainsRef = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
-               img.setDrawingCacheEnabled(true);
-               img.buildDrawingCache();
-               Bitmap bitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
-               ByteArrayOutputStream baos = new ByteArrayOutputStream();
-               bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-               byte[] data = baos.toByteArray();
+               UploadTask uploadTask = null;
+               StorageReference mountainsRef = null;
+               if(isImageClicked){
+                   Calendar calendar = Calendar.getInstance();
 
-               UploadTask uploadTask = mountainsRef.putBytes(data);
-               uploadTask.addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception exception) {
-                       // Handle unsuccessful uploads
-                       Toast.makeText(EditProfileActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                   }
-               }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                   @Override
-                   public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                       // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                       mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                           @Override
-                           public void onSuccess(Uri uri) {
+                   mountainsRef = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
+                   img.setDrawingCacheEnabled(true);
+                   img.buildDrawingCache();
+                   Bitmap bitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
+                   ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                   bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                   byte[] data = baos.toByteArray();
 
-                               final String downloadUrl =
-                                       uri.toString();
-                               Log.d("AAAA","url "+downloadUrl);
+                   uploadTask = mountainsRef.putBytes(data);
+                   StorageReference finalMountainsRef = mountainsRef;
+                   uploadTask.addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception exception) {
+                           // Handle unsuccessful uploads
+                           Toast.makeText(EditProfileActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                       }
+                   }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                       @Override
+                       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                           // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                           finalMountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                               @Override
+                               public void onSuccess(Uri uri) {
 
-                               Image image = new Image(String.valueOf(downloadUrl));
+                                   final String downloadUrl =
+                                           uri.toString();
+                                   Log.d("AAAA","url "+downloadUrl);
 
-                               mData.child("images").push().setValue(image, new DatabaseReference.CompletionListener() {
-                                   @Override
-                                   public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                       if(error == null){
-                                           Toast.makeText(EditProfileActivity.this, "Luu du lieu thanh cong", Toast.LENGTH_SHORT).show();
-                                       }else{
-                                           Toast.makeText(EditProfileActivity.this, "Loi luu du lieu", Toast.LENGTH_SHORT).show();
+                                   Image image = new Image(String.valueOf(downloadUrl));
+
+                                   mData.child("images").push().setValue(image, new DatabaseReference.CompletionListener() {
+                                       @Override
+                                       public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                           if(error == null){
+                                               Toast.makeText(EditProfileActivity.this, "Luu du lieu thanh cong", Toast.LENGTH_SHORT).show();
+                                           }else{
+                                               Toast.makeText(EditProfileActivity.this, "Loi luu du lieu", Toast.LENGTH_SHORT).show();
+                                           }
                                        }
-                                   }
-                               });
-                               User user=new User(
-                                       mAuth.getCurrentUser().getEmail(),
-                                       Integer.parseInt(phoneNo.getEditText().getText().toString()),
-                                       fullName.getEditText().getText().toString(),
-                                       bio.getEditText().getText().toString(),
-                                       downloadUrl,
-                                       mAuth.getUid()
-                               );
-                               mDatabase.child("users").child(mAuth.getUid()).setValue(user);
-                               finish();
-                           }
-                       });
-                   }
-               });
-               try {
+                                   });
+                                   User user=new User(
+                                           mAuth.getCurrentUser().getEmail(),
+                                           Integer.parseInt(phoneNo.getEditText().getText().toString()),
+                                           fullName.getEditText().getText().toString(),
+                                           bio.getEditText().getText().toString(),
+                                           downloadUrl,
+                                           mAuth.getUid()
+                                   );
+                                   mDatabase.child("users").child(mAuth.getUid()).setValue(user);
 
-               }catch (Exception e){
-                   e.printStackTrace();
+                               }
+                           });
+                       }
+                   });
+               } else {
+                   User user=new User(
+                           mAuth.getCurrentUser().getEmail(),
+                           Integer.parseInt(phoneNo.getEditText().getText().toString()),
+                           fullName.getEditText().getText().toString(),
+                           bio.getEditText().getText().toString(),
+                           currentUser.getImage_profile(),
+                           mAuth.getUid()
+                   );
+                   mDatabase.child("users").child(mAuth.getUid()).setValue(user);
+
                }
+               Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
+               finish();
+
            }
        });
     }
@@ -160,7 +178,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void showAllUserData(){
         Intent intent = getIntent();
         currentUser= (User) intent.getSerializableExtra("currentUser");
-
+        Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
         fullName.getEditText().setText(currentUser.getFullname());
 //        username.getEditText().setText(currentUser.getUsername());
         phoneNo.getEditText().setText(currentUser.getPhonenumber()+"");
