@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.balotravel">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -12,30 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BaloTravel">
 
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBhj_LHnpq3EGbr5fGHpj0ORcDx7Rb-B_E" />
-
-        <activity
-            android:name=".PlaceListOnMapActivity"
-            android:exported="false"
-            android:label="Xem trên bản đồ" />
         <activity
             android:name=".CreateNewJouneyActivity"
-            android:exported="true"
-            android:label="Tạo chuyến đi mới"
-            android:parentActivityName=".MainActivity" />
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -46,6 +24,9 @@
             android:name=".PostActivity"
             android:exported="false" />
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
@@ -53,10 +34,22 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBT5Hyl1QUbYmPb2vNsE4-xxJl5K0LDuMk"/>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <!--             android:name="preloaded_fonts"
+                    android:resource="@array/preloaded_fonts"  -->
+        />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>
