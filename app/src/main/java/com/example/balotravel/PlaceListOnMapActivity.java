@@ -63,31 +63,34 @@ public class PlaceListOnMapActivity extends FragmentActivity implements OnMapRea
 
         mMap = googleMap;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
+        int index = 0;
         for (Place place: this.placeList) {
             LatLng sydney = new LatLng(place.getLatitude(), place.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
-//            Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-//            Bitmap bmp = Bitmap.createBitmap(120, 120, conf);
-//            Canvas canvas1 = new Canvas(bmp);
-//
-//// paint defines the text color, stroke width and size
-//            Paint color = new Paint();
-//            color.setTextSize(35);
-//            color.setColor(Color.BLACK);
-//
-//// modify canvas
-//            canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(),
-//                    R.drawable.map_marker), null, new Rect(0,0,120,120), null);
-//            canvas1.drawText("User Name!", 30, 40, color);
-//
-//// add marker to Map
-//            mMap.addMarker(new MarkerOptions()
-//                    .position(sydney)
-//                    .icon(BitmapDescriptorFactory.fromBitmap(bmp))
-//                    // Specifies the anchor to be at a particular point in the marker image.
-//                    .anchor(0.5f, 1));
-//
+//            mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
+            Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+            Bitmap bmp = Bitmap.createBitmap(120, 120, conf);
+            Canvas canvas1 = new Canvas(bmp);
+
+// paint defines the text color, stroke width and size
+            Paint color = new Paint();
+            color.setTextSize(50);
+            color.setColor(Color.RED);
+
+
+// modify canvas
+            canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                    R.drawable.map_marker), null, new Rect(0,0,120,120), null);
+            canvas1.drawText(String.valueOf(++index), 45, 60, color);
+            //canvas1.drawText(place.getName(), 80, 120, color);
+
+// add marker to Map
+            mMap.addMarker(new MarkerOptions()
+                    .position(sydney)
+                    .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+                    .title(place.getName())
+                    // Specifies the anchor to be at a particular point in the marker image.
+                    .anchor(0.5f, 1));
+
 
             builder.include(sydney);
         }
