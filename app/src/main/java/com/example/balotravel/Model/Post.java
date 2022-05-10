@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Post {
-    private int postId;
+    private String postId;
     private String postPublisher;
     private String postImage;
     private String name;
@@ -30,11 +30,11 @@ public class Post {
     public Post() {
     }
 
-    public int getPostId() {
+    public String getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(String postId) {
         this.postId = postId;
     }
 

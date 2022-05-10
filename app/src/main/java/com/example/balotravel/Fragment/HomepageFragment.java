@@ -40,7 +40,7 @@ public class HomepageFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(),postList);
         recyclerView.setAdapter(postAdapter);
-        //checkFollowing();
+        checkFollowing();
         return view;
     }
 
@@ -68,7 +68,7 @@ public class HomepageFragment extends Fragment {
     }
 
     private  void readPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
