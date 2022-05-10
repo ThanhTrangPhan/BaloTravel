@@ -39,14 +39,14 @@
 
         <Button
             android:id="@+id/seeOnMapBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="176dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
             android:layout_marginTop="31dp"
             android:fontFamily="serif"
             android:text="Xem trên bản đồ"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:layout_marginLeft="100dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/placeInput" />
     </LinearLayout>
@@ -55,7 +55,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activePlacesView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="246dp"
         android:layout_marginTop="16dp"
         android:minHeight="100dp" />
 
