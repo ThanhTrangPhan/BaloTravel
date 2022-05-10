@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.balotravel.CommentActivity;
 import com.example.balotravel.FollowersActivity;
 import com.example.balotravel.Fragment.PostDetailFragment;
-import com.example.balotravel.Fragment.UserFragment;
+import com.example.balotravel.Fragment.ProfileFragment;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
@@ -110,7 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 editor.apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserFragment()).commit();
+                        new ProfileFragment()).commit();
             }
         });
 
@@ -122,7 +122,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 editor.apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserFragment()).commit();
+                        new ProfileFragment()).commit();
             }
         });
 
@@ -134,7 +134,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 editor.apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserFragment()).commit();
+                        new ProfileFragment()).commit();
             }
         });
 //
