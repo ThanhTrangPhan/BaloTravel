@@ -1,167 +1,208 @@
 package com.example.balotravel;
 
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
+import com.example.balotravel.Model.HinhAnh;
 import com.example.balotravel.Model.User;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import java.util.HashMap;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 
 public class EditProfileActivity extends AppCompatActivity {
-  ImageView close, image_profile;
-  TextView save, tv_change;
-  EditText fullname, username, bio;
 
-  FirebaseUser firebaseUser;
-  private Uri mImageUri;
-  private StorageTask uploadTask;
-  StorageReference storageRef;
-    @Override
+    TextInputLayout  fullName,username,phoneNo, bio;
+    TextView tvName;
+    Button btnUpdate;
+    String _USERNAME, _FULLNAME, _PHONENO, _ADDRESS;
+    int REQUEST_CODE_IMAGE = 1;
+    DatabaseReference mData;
+    ImageView imgHinh;
+    User currentUser;
+//    DatabaseReference reference;
+//    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
+//        new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+//            @Override
+//            public void onActivityResult(ActivityResult result) {
+//             if(result.getResultCode() == RESULT_OK){
+//                 Intent intent = result.getData();
+//                 String bitmap = intent.getStringExtra("data");
+//                 imgHinh.setImageBitmap(bitmap);
+//             }
+//            }
+//        });
+    protected FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
     protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_edit_profile);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_profile);
+        mData = FirebaseDatabase.getInstance().getReference();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://balotravel-9a424.appspot.com");
 
-      close = findViewById(R.id.close);
-      image_profile = findViewById(R.id.image_profile);
-      save = findViewById(R.id.save);
-      tv_change = findViewById(R.id.tv_change);
-      fullname = findViewById(R.id.fullname);
-      username = findViewById(R.id.username);
-      bio = findViewById(R.id.bio);
+        tvName=findViewById(R.id.tvName);
+        fullName=findViewById(R.id.edt_fullname);
+//        username=findViewById(R.id.edt_username);
+        phoneNo=findViewById(R.id.edt_phone_no);
+        bio =findViewById(R.id.edt_bio);
+        btnUpdate=findViewById(R.id.btn_update);
+        imgHinh = findViewById(R.id.profile_image);
+       showAllUserData();
 
-      firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-      storageRef = FirebaseStorage.getInstance().getReference("uploads");
+       imgHinh.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+               startActivityForResult(intent,REQUEST_CODE_IMAGE);
+           }
+       });
 
-      DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-      reference.addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-          User user = dataSnapshot.getValue(User.class);
-          fullname.setText(user.getFullname());
-          username.setText(user.getUsername());
-          bio.setText(user.getBio());
-          Glide.with(getApplicationContext()).load(user.getImage_profile()).into(image_profile);
+       btnUpdate.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Calendar calendar = Calendar.getInstance();
+               StorageReference mountainsRef;
+               mountainsRef = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
+               imgHinh.setDrawingCacheEnabled(true);
+               imgHinh.buildDrawingCache();
+               Bitmap bitmap = ((BitmapDrawable) imgHinh.getDrawable()).getBitmap();
+               ByteArrayOutputStream baos = new ByteArrayOutputStream();
+               bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+               byte[] data = baos.toByteArray();
+
+               UploadTask uploadTask = mountainsRef.putBytes(data);
+               uploadTask.addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception exception) {
+                       // Handle unsuccessful uploads
+                       Toast.makeText(EditProfileActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                   }
+               }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                   @Override
+                   public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                       // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                       mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                           @Override
+                           public void onSuccess(Uri uri) {
+
+                               final String downloadUrl =
+                                       uri.toString();
+                               Log.d("AAAA","url "+downloadUrl);
+
+                               HinhAnh hinhanh = new HinhAnh(String.valueOf(downloadUrl));
+                               mData.child("HinhAnh").push().setValue(hinhanh, new DatabaseReference.CompletionListener() {
+                                   @Override
+                                   public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                       if(error == null){
+                                           Toast.makeText(EditProfileActivity.this, "Luu du lieu thanh cong", Toast.LENGTH_SHORT).show();
+                                       }else{
+                                           Toast.makeText(EditProfileActivity.this, "Loi luu du lieu", Toast.LENGTH_SHORT).show();
+                                       }
+                                   }
+                               });
+                           }
+                       });
+
+//                   Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+//                       Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                       if(downloadUrl.isSuccessful()){
+//                           String generatedFilePath = downloadUrl.getResult().toString();
+//                           System.out.println("## Stored path is "+generatedFilePath);
+//                       }
+//                       Log.d("AAAA", downloadUrl + "");
+                       //Tao node tren phan database
+                   }
+               });
+               try {
+
+                   User user=new User(
+                           mAuth.getCurrentUser().getEmail(),
+                           Integer.parseInt(phoneNo.getEditText().getText().toString()),
+                           fullName.getEditText().getText().toString(),
+                           bio.getEditText().getText().toString(),
+                           "",
+                           mAuth.getUid()
+                   );
+                   mDatabase.child("users").child(mAuth.getUid()).setValue(user);
+                   finish();
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+           }
+       });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null){
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            imgHinh.setImageBitmap(bitmap);
         }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
+    private void showAllUserData(){
+        Intent intent = getIntent();
+        currentUser= (User) intent.getSerializableExtra("currentUser");
 
-        }
-      });
-
-      close.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          finish();
-        }
-      });
-
-      save.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          updateProfile(fullname.getText().toString(),
-                  username.getText().toString(),
-                  bio.getText().toString());
-        }
-      });
-
+        fullName.getEditText().setText(currentUser.getFullname());
+//        username.getEditText().setText(currentUser.getUsername());
+        phoneNo.getEditText().setText(currentUser.getPhonenumber()+"");
+        bio.getEditText().setText(currentUser.getBio());
+        tvName.setText(currentUser.getUsername());
 
 
 
     }
 
-  private void updateProfile(String fullname, String username, String bio){
-
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
-
-    HashMap<String, Object> map = new HashMap<>();
-    map.put("fullname", fullname);
-    map.put("username", username);
-    map.put("bio", bio);
-
-    reference.updateChildren(map);
-
-    Toast.makeText(EditProfileActivity.this, "Successfully updated!", Toast.LENGTH_SHORT).show();
-  }
-
-  private String getFileExtension(Uri uri){
-    ContentResolver cR = getContentResolver();
-    MimeTypeMap mime = MimeTypeMap.getSingleton();
-    return mime.getExtensionFromMimeType(cR.getType(uri));
-  }
-
-  private void uploadImage(){
-    final ProgressDialog pd = new ProgressDialog(this);
-    pd.setMessage("Uploading");
-    pd.show();
-    if (mImageUri != null){
-      final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
-              + "." + getFileExtension(mImageUri));
-
-      uploadTask = fileReference.putFile(mImageUri);
-      uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-        @Override
-        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-          if (!task.isSuccessful()) {
-            throw task.getException();
-          }
-          return fileReference.getDownloadUrl();
-        }
-      }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-        @Override
-        public void onComplete(@NonNull Task<Uri> task) {
-          if (task.isSuccessful()) {
-            Uri downloadUri = task.getResult();
-            String miUrlOk = downloadUri.toString();
-
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-            HashMap<String, Object> map1 = new HashMap<>();
-            map1.put("imageurl", ""+miUrlOk);
-            reference.updateChildren(map1);
-
-            pd.dismiss();
-
-          } else {
-            Toast.makeText(EditProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-          }
-        }
-      }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-          Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-      });
-
-    } else {
-      Toast.makeText(EditProfileActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
-    }
-  }
-
+//    public void update(View view){
+//           if(isFullNameChanged() || isUserNameChanged() || isPhoneNoChanged() || isAddressChanged()){
+//               Toast.makeText(this, "Data has been updated", Toast.LENGTH_LONG).show();
+//           }
+//    }
+//    private boolean isFullNameChanged() {
+//        if(_FULLNAME.equals(fullName.getEditText().getText().toString())){
+//            reference.child(_FULLNAME).child("fullname").setValue(fullName.getEditText().getText().toString());
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+//    }
+//    private boolean isUserNameChanged() {
+//    }
+//    private boolean isPhoneNoChanged() {
+//    }
+//    private boolean isAddressChanged() {
+//    }
 }

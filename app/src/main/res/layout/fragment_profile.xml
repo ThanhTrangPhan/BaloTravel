@@ -148,6 +148,13 @@
                         android:text="Chỉnh sửa trang cá nhân" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -161,12 +168,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:id="@+id/fullname"
+                    android:layout_gravity="center"
+                    android:id="@+id/full_name_profile"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
                 <TextView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:layout_gravity="center"
+                    android:id="@+id/tv_phone"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:id="@+id/bio"

@@ -141,7 +141,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             super(itemView);
 
             username = itemView.findViewById(R.id.username);
-            fullname = itemView.findViewById(R.id.fullname);
+            fullname = itemView.findViewById(R.id.full_name_profile);
             image_profile = itemView.findViewById(R.id.image_profile);
         }
     }

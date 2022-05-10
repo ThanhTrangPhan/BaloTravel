@@ -1,16 +1,31 @@
 package com.example.balotravel.Model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String username,fullname,bio;
+    private int phonenumber;
     private String image_profile;
     private String userId;
 
-    public User(String username, String fullname, String bio, String image_profile, String userId) {
+    public User() {
+    }
+
+    public User(String username, int phonenumber, String fullname, String bio, String image_profile, String userId) {
         this.username = username;
         this.fullname = fullname;
         this.bio = bio;
         this.image_profile = image_profile;
         this.userId = userId;
+        this.phonenumber = phonenumber;
+    }
+
+    public int getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(int phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public String getUsername() {
