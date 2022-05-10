@@ -1,5 +1,7 @@
 package com.example.balotravel.Adapter;
 
+
+import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.example.balotravel.Fragment.ProfileFragment;
+import com.example.balotravel.Fragment.UserFragment;
 import com.example.balotravel.MainActivity;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
@@ -22,15 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-
 import java.util.HashMap;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-
 import static android.content.Context.MODE_PRIVATE;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,7 +84,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                     editor.apply();
 
                     ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new ProfileFragment()).commit();
+                            new UserFragment()).commit();
                 } else {
                     Intent intent = new Intent(mContext, MainActivity.class);
                     intent.putExtra("publisherid", user.getUserId());
@@ -96,16 +97,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             @Override
             public void onClick(View view) {
                 if (holder.btn_follow.getText().toString().equals("follow")) {
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
+
+                    FirebaseDatabase.getInstance().getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).setValue(true);
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getUserId())
+                    FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).setValue(true);
 
                     addNotification(user.getUserId());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
+                    FirebaseDatabase.getInstance().getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).removeValue();
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getUserId())
+                    FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -141,8 +143,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             super(itemView);
 
             username = itemView.findViewById(R.id.username);
-            fullname = itemView.findViewById(R.id.full_name_profile);
+            fullname = itemView.findViewById(R.id.fullname);
             image_profile = itemView.findViewById(R.id.image_profile);
+            btn_follow = itemView.findViewById(R.id.btn_follow);
         }
     }
 

@@ -28,12 +28,12 @@
             android:id="@+id/username"
             android:maxLines="1"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/teal"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/full_name_profile"
+            android:id="@+id/fullname"
             android:maxLines="1"
             android:text="Full Name"/>
 
@@ -42,10 +42,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:background="@color/black"
+
+        android:background="@drawable/button_background"
         android:visibility="gone"
         android:id="@+id/btn_follow"
-        android:textColor="@color/black"
+        android:textColor="@color/tan"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
