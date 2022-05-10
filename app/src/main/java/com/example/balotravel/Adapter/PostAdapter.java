@@ -1,8 +1,12 @@
 package com.example.balotravel.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.balotravel.CommentActivity;
+import com.example.balotravel.FollowersActivity;
+import com.example.balotravel.Fragment.PostDetailFragment;
+import com.example.balotravel.Fragment.UserFragment;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
@@ -61,8 +70,158 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
             holder.description.setText(post.getDescription());
         }
         publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getPostPublisher());
-        isLiked(post.getPostId(),holder.like);
+        isLiked(post.getPostId(), holder.like);
+        isSaved(post.getPostId(), holder.save);
+//        nrLikes(holder.likes, post.getPostId());
+//        getCommetns(post.getPostId(), holder.comments);
+
+        holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.like.getTag().equals("like")) {
+                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId())
+                            .child(firebaseUser.getUid()).setValue(true);
+                    //addNotification(post.getPostPublisher(), post.getPostId());
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId())
+                            .child(firebaseUser.getUid()).removeValue();
+                }
+            }
+        });
+
+        holder.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.save.getTag().equals("save")){
+                    FirebaseDatabase.getInstance().getReference().child("saves").child(firebaseUser.getUid())
+                            .child(post.getPostId()).setValue(true);
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("saves").child(firebaseUser.getUid())
+                            .child(post.getPostId()).removeValue();
+                }
+            }
+        });
+
+        holder.image_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getPostPublisher());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new UserFragment()).commit();
+            }
+        });
+
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getPostPublisher());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new UserFragment()).commit();
+            }
+        });
+
+        holder.publisher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getPostPublisher());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new UserFragment()).commit();
+            }
+        });
+//
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("postid", post.getPostId());
+                intent.putExtra("publisherid", post.getPostPublisher());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("postid", post.getPostId());
+                intent.putExtra("publisherid", post.getPostPublisher());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.post_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("postid", post.getPostId());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PostDetailFragment()).commit();
+            }
+        });
+
+        holder.likes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, FollowersActivity.class);
+                intent.putExtra("id", post.getPostId());
+                intent.putExtra("title", "likes");
+                mContext.startActivity(intent);
+            }
+        });
+
+//        holder.more.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                PopupMenu popupMenu = new PopupMenu(mContext, view);
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                        switch (menuItem.getItemId()){
+//                            case R.id.edit:
+//                                editPost(post.getPostid());
+//                                return true;
+//                            case R.id.delete:
+//                                final String id = post.getPostid();
+//                                FirebaseDatabase.getInstance().getReference("Posts")
+//                                        .child(post.getPostid()).removeValue()
+//                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                if (task.isSuccessful()){
+//                                                    deleteNotifications(id, firebaseUser.getUid());
+//                                                }
+//                                            }
+//                                        });
+//                                return true;
+//                            case R.id.report:
+//                                Toast.makeText(mContext, "Reported clicked!", Toast.LENGTH_SHORT).show();
+//                                return true;
+//                            default:
+//                                return false;
+//                        }
+//                    }
+//                });
+//                popupMenu.inflate(R.menu.post_menu);
+//                if (!post.getPublisher().equals(firebaseUser.getUid())){
+//                    popupMenu.getMenu().findItem(R.id.edit).setVisible(false);
+//                    popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
+//                }
+//                popupMenu.show();
+//            }
+//        });
     }
+
 
 
 
