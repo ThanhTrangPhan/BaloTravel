@@ -13,19 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.balotravel.Model.HinhAnh;
+import com.example.balotravel.Model.Image;
 import com.example.balotravel.Model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -46,7 +40,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String _USERNAME, _FULLNAME, _PHONENO, _ADDRESS;
     int REQUEST_CODE_IMAGE = 1;
     DatabaseReference mData;
-    ImageView imgHinh;
+    ImageView img;
     User currentUser;
 //    DatabaseReference reference;
 //    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
@@ -76,10 +70,10 @@ public class EditProfileActivity extends AppCompatActivity {
         phoneNo=findViewById(R.id.edt_phone_no);
         bio =findViewById(R.id.edt_bio);
         btnUpdate=findViewById(R.id.btn_update);
-        imgHinh = findViewById(R.id.profile_image);
+        img = findViewById(R.id.profile_image);
        showAllUserData();
 
-       imgHinh.setOnClickListener(new View.OnClickListener() {
+       img.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -93,9 +87,9 @@ public class EditProfileActivity extends AppCompatActivity {
                Calendar calendar = Calendar.getInstance();
                StorageReference mountainsRef;
                mountainsRef = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
-               imgHinh.setDrawingCacheEnabled(true);
-               imgHinh.buildDrawingCache();
-               Bitmap bitmap = ((BitmapDrawable) imgHinh.getDrawable()).getBitmap();
+               img.setDrawingCacheEnabled(true);
+               img.buildDrawingCache();
+               Bitmap bitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
                ByteArrayOutputStream baos = new ByteArrayOutputStream();
                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                byte[] data = baos.toByteArray();
@@ -119,8 +113,9 @@ public class EditProfileActivity extends AppCompatActivity {
                                        uri.toString();
                                Log.d("AAAA","url "+downloadUrl);
 
-                               HinhAnh hinhanh = new HinhAnh(String.valueOf(downloadUrl));
-                               mData.child("HinhAnh").push().setValue(hinhanh, new DatabaseReference.CompletionListener() {
+                               Image image = new Image(String.valueOf(downloadUrl));
+
+                               mData.child("images").push().setValue(image, new DatabaseReference.CompletionListener() {
                                    @Override
                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                        if(error == null){
@@ -130,31 +125,22 @@ public class EditProfileActivity extends AppCompatActivity {
                                        }
                                    }
                                });
+                               User user=new User(
+                                       mAuth.getCurrentUser().getEmail(),
+                                       Integer.parseInt(phoneNo.getEditText().getText().toString()),
+                                       fullName.getEditText().getText().toString(),
+                                       bio.getEditText().getText().toString(),
+                                       downloadUrl,
+                                       mAuth.getUid()
+                               );
+                               mDatabase.child("users").child(mAuth.getUid()).setValue(user);
+                               finish();
                            }
                        });
-
-//                   Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-//                       Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
-//                       if(downloadUrl.isSuccessful()){
-//                           String generatedFilePath = downloadUrl.getResult().toString();
-//                           System.out.println("## Stored path is "+generatedFilePath);
-//                       }
-//                       Log.d("AAAA", downloadUrl + "");
-                       //Tao node tren phan database
                    }
                });
                try {
 
-                   User user=new User(
-                           mAuth.getCurrentUser().getEmail(),
-                           Integer.parseInt(phoneNo.getEditText().getText().toString()),
-                           fullName.getEditText().getText().toString(),
-                           bio.getEditText().getText().toString(),
-                           "",
-                           mAuth.getUid()
-                   );
-                   mDatabase.child("users").child(mAuth.getUid()).setValue(user);
-                   finish();
                }catch (Exception e){
                    e.printStackTrace();
                }
@@ -166,7 +152,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imgHinh.setImageBitmap(bitmap);
+            img.setImageBitmap(bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -180,8 +166,6 @@ public class EditProfileActivity extends AppCompatActivity {
         phoneNo.getEditText().setText(currentUser.getPhonenumber()+"");
         bio.getEditText().setText(currentUser.getBio());
         tvName.setText(currentUser.getUsername());
-
-
 
     }
 
