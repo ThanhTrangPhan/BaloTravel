@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="189dp"
+            android:layout_height="276dp"
             android:background="@drawable/bg3">
 
 
@@ -34,7 +34,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="112dp"
                 android:layout_marginEnd="124dp"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="228dp"
                 android:background="@color/tangerine"
                 android:text="Register"
                 android:textSize="14dp"
@@ -45,17 +45,17 @@
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="298dp"
-                android:layout_height="49dp"
-                android:layout_marginStart="70dp"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="44dp"
                 android:hint="Email address"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -64,43 +64,13 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="44dp"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/btnregis"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/lname"
-                android:layout_width="298dp"
-                android:layout_height="49dp"
-                android:layout_marginStart="70dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginBottom="124dp"
-                android:hint="Last Name"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/password"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/fname"
-                android:layout_width="298dp"
-                android:layout_height="49dp"
-                android:layout_marginStart="70dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginBottom="212dp"
-                android:hint="Fist Name"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/password"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
