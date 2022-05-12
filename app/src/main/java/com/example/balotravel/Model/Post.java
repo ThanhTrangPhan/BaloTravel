@@ -1,32 +1,49 @@
 package com.example.balotravel.Model;
 
-public class Post {
-    private int postId;
-    private String postPublishher;
-    private String postImage;
-    private String description;
+import java.util.ArrayList;
+import java.util.Map;
 
-    public Post(int postId, String postPublishher, String postImage, String description) {
-        this.postId = postId;
-        this.postPublishher = postPublishher;
+public class Post {
+    private String postId;
+    private String postPublisher;
+    private String postImage;
+    private String name;
+    private String description;
+    private ArrayList <Place> placeList;
+
+    public Post(String name, String postPublisher, String postImage, String description, ArrayList <Place> placeList) {
+        this.name = name;
+        this.postPublisher = postPublisher;
         this.postImage = postImage;
         this.description = description;
+        this.placeList = placeList;
     }
 
-    public int getPostId() {
+    public Post(String name, String postPublisher, String postImage, String description) {
+        this.name = name;
+        this.postPublisher = postPublisher;
+        this.postImage = postImage;
+        this.description = description;
+
+    }
+
+    public Post() {
+    }
+
+    public String getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(String postId) {
         this.postId = postId;
     }
 
-    public String getPostPublishher() {
-        return postPublishher;
+    public String getPostPublisher() {
+        return postPublisher;
     }
 
-    public void setPostPublishher(String postPublishher) {
-        this.postPublishher = postPublishher;
+    public void setPostPublisher(String postPublisher) {
+        this.postPublisher = postPublisher;
     }
 
     public String getPostImage() {
@@ -37,9 +54,27 @@ public class Post {
         this.postImage = postImage;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ArrayList<Place> getPlaceList() {
+        return placeList;
+    }
+
+    public void setPlaceList(ArrayList<Place> placeList) {
+        this.placeList = placeList;
+    }
 }

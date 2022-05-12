@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:scrollbars="vertical"
     android:layout_height="match_parent">
 
 
@@ -34,12 +35,11 @@
                 android:layout_marginStart="112dp"
                 android:layout_marginEnd="124dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/tangerine"
+                android:background="#208EBA"
                 android:text="Login"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toTopOf="@+id/btnregis"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
@@ -63,13 +63,12 @@
                 android:layout_height="49dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="32dp"
                 android:hint="Email address"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -78,15 +77,13 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="42dp"
-                android:layout_marginBottom="84dp"
+                android:layout_marginBottom="124dp"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/btnregis"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

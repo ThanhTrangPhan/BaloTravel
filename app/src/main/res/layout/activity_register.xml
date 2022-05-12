@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="276dp"
+            android:layout_height="274dp"
             android:background="@drawable/bg3">
 
 
@@ -25,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar1"
             android:layout_width="match_parent"
-            android:layout_height="510dp">
+            android:layout_height="443dp">
 
 
             <Button
@@ -34,8 +34,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="112dp"
                 android:layout_marginEnd="124dp"
-                android:layout_marginBottom="228dp"
-                android:background="@color/tangerine"
+                android:layout_marginBottom="184dp"
                 android:text="Register"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -45,17 +44,16 @@
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="300dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="30dp"
+                android:layout_width="298dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="70dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="44dp"
+                android:layout_marginBottom="36dp"
                 android:hint="Email address"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -64,7 +62,7 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="44dp"
+                android:layout_marginBottom="28dp"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"

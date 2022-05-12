@@ -37,10 +37,10 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEdit = findViewById (R.id.password);
         btnregis = findViewById (R.id.btnregis);
 
-        btnregis.setOnClickListener (new View.OnClickListener () {
+        btnregis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                register ();
+                register();
             }
         });
     }
