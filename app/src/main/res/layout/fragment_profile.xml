@@ -54,7 +54,7 @@
                     android:id="@+id/image_profile"
                     android:layout_width="69dp"
                     android:layout_height="86dp"
-                    android:src="@drawable/mayman" />
+                    android:src="@color/tan" />
 
                 <LinearLayout
                     android:layout_marginTop="20dp"
