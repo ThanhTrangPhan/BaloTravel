@@ -1,6 +1,5 @@
 package com.example.balotravel.Adapter;
 
-
 import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +40,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
     private Context mContext;
     private List<User> mUsers;
     private boolean isFragment;
-
     private FirebaseUser firebaseUser;
 
     public UserAdapter(Context context, List<User> users, boolean isFragment){
@@ -63,7 +61,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         final User user = mUsers.get(position);
-
         holder.btn_follow.setVisibility(View.VISIBLE);
         isFollowing(user.getUserId(), holder.btn_follow);
 
@@ -96,18 +93,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         holder.btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.btn_follow.getText().toString().equals("follow")) {
+                if (holder.btn_follow.getText().toString().equals("Theo dõi")) {
 
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(firebaseUser.getUid())
+                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).setValue(true);
                     FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).setValue(true);
 
                     addNotification(user.getUserId());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(firebaseUser.getUid())
+                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).removeValue();
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
+                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -116,7 +113,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
     }
 
     private void addNotification(String userid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("Notifications").child(userid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
@@ -153,15 +150,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Follow").child(firebaseUser.getUid()).child("following");
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference()
+                .child("follows").child(firebaseUser.getUid()).child("following");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(userid).exists()){
-                    button.setText("following");
+                    button.setText("Đã theo dõi");
                 } else{
-                    button.setText("follow");
+                    button.setText("Theo dõi");
                 }
             }
 
