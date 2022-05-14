@@ -84,9 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful ()) {
                     Log.d("UserID",mAuth.getCurrentUser().getUid());
                     User user = new User("",0,"","","https://firebasestorage.googleapis.com/v0/b/balotravel-9a424.appspot.com/o/2wallpaperflare.com_wallpaper.jpg?alt=media&token=8c87014d-ea58-4f36-9c78-713733190b43",mAuth.getCurrentUser().getUid());
-                    DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users");
-                    mDatabase.setValue(mAuth.getCurrentUser().getUid());
-                    mDatabase.child(mAuth.getCurrentUser().getUid()).setValue(user);
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(user);
                     Toast.makeText (getApplicationContext (),"User has been registered successfully!",Toast.LENGTH_SHORT).show ();
                     Intent intent = new Intent (RegisterActivity.this,EditProfileActivity.class);
                     intent.putExtra("currentUser",user);
