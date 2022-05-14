@@ -81,6 +81,7 @@ public class ProfileFragment extends Fragment {
                 bio.setText(currentUser.getBio());
                 fullname.setText(currentUser.getFullname());
                 phoneNum.setText("0" + currentUser.getPhonenumber()+"");
+                
                 Glide.with(ProfileFragment.this).load(Uri.parse(currentUser.getImage_profile())).into(image_profile);
             }
 
@@ -112,9 +113,14 @@ public class ProfileFragment extends Fragment {
 
 
         edit_profile.setOnClickListener(v->{
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            intent.putExtra("currentUser",currentUser);
-            startActivity(intent);
+            if(edit_profile.getText() == "Chỉnh sửa trang cá nhân"){
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("currentUser",currentUser);
+                startActivity(intent);
+            } else {
+
+            }
+
         });
     }
 }
