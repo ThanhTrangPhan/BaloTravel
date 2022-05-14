@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_supervised_user_circle_24"
                     android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_verified_user_24"
                     android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_phone_24"
                     android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_house_24"
                     android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
