@@ -18,15 +18,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.balotravel.Fragment.ProfileFragment;
 import com.example.balotravel.Model.Image;
 import com.example.balotravel.Model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -74,12 +77,14 @@ public class EditProfileActivity extends AppCompatActivity {
         bio =findViewById(R.id.edt_bio);
         btnUpdate=findViewById(R.id.btn_update);
         img = findViewById(R.id.profile_image);
-       showAllUserData();
+        showAllUserData();
 
        img.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+
                isImageClicked = true;
+               Log.d("image","Image: "+isImageClicked);
                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                startActivityForResult(intent,REQUEST_CODE_IMAGE);
            }
@@ -90,7 +95,9 @@ public class EditProfileActivity extends AppCompatActivity {
            public void onClick(View view) {
                UploadTask uploadTask = null;
                StorageReference mountainsRef = null;
+               Log.d("image click","Image: "+isImageClicked);
                if(isImageClicked){
+
                    Calendar calendar = Calendar.getInstance();
 
                    mountainsRef = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
@@ -119,7 +126,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
                                    final String downloadUrl =
                                            uri.toString();
-                                   Log.d("AAAA","url "+downloadUrl);
 
                                    Image image = new Image(String.valueOf(downloadUrl));
 
@@ -141,13 +147,15 @@ public class EditProfileActivity extends AppCompatActivity {
                                            downloadUrl,
                                            mAuth.getUid()
                                    );
+                                   currentUser.setImage_profile(downloadUrl);
                                    mDatabase.child("users").child(mAuth.getUid()).setValue(user);
-
+                                   Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
                                }
                            });
                        }
                    });
                } else {
+
                    User user=new User(
                            mAuth.getCurrentUser().getEmail(),
                            Integer.parseInt(phoneNo.getEditText().getText().toString()),
@@ -159,13 +167,14 @@ public class EditProfileActivity extends AppCompatActivity {
                    mDatabase.child("users").child(mAuth.getUid()).setValue(user);
 
                }
-               Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
-               finish();
-
+               Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+               startActivity(intent);
            }
        });
     }
 
+               UploadTask uploadTask = null;
+               StorageReference mountainsRef = null;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null){
@@ -178,14 +187,28 @@ public class EditProfileActivity extends AppCompatActivity {
     private void showAllUserData(){
         Intent intent = getIntent();
         currentUser= (User) intent.getSerializableExtra("currentUser");
+        mDatabase.child("users").child(mAuth.getUid()).child("image_profile").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        currentUser.setImage_profile(dataSnapshot.getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        Log.d("image",currentUser.getImage_profile());
         Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
         fullName.getEditText().setText(currentUser.getFullname());
 //        username.getEditText().setText(currentUser.getUsername());
         phoneNo.getEditText().setText(currentUser.getPhonenumber()+"");
         bio.getEditText().setText(currentUser.getBio());
-        tvName.setText(currentUser.getUsername());
+        tvName.setText(mAuth.getCurrentUser().getEmail().toString());
 
     }
+
 
 //    public void update(View view){
 //           if(isFullNameChanged() || isUserNameChanged() || isPhoneNoChanged() || isAddressChanged()){

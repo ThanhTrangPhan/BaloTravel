@@ -22,7 +22,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/dulich" />
+                android:src="@color/tan" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -33,7 +33,6 @@
                 android:layout_toRightOf="@+id/profile_image"
                 android:fontFamily="@font/bungee"
                 android:includeFontPadding="false"
-                android:text="Nhat"
                 android:textSize="15sp" />
 
 
@@ -56,8 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_supervised_user_circle_24"
-                    android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                    android:drawablePadding="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -87,8 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_phone_24"
-                    android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                    android:drawablePadding="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -102,8 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_house_24"
-                    android:drawablePadding="10dp"
-                    android:text="nhat dep zai" />
+                    android:drawablePadding="10dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
