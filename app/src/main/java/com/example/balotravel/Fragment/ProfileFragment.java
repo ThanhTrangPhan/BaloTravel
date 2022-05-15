@@ -113,13 +113,9 @@ public class ProfileFragment extends Fragment {
 
 
         edit_profile.setOnClickListener(v->{
-            if(edit_profile.getText() == "Chỉnh sửa trang cá nhân"){
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra("currentUser",currentUser);
                 startActivity(intent);
-            } else {
-
-            }
 
         });
     }
