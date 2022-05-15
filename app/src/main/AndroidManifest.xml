@@ -13,7 +13,8 @@
 
         <activity
             android:name=".CreateNewJouneyActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Thêm chuyến đi mới"/>
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

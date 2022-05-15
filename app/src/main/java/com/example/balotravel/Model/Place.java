@@ -96,6 +96,14 @@ public class Place implements Serializable {
         this.longitude = longitude;
     }
 
+    public ArrayList<Uri> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<Uri> imageList) {
+        this.imageList = imageList;
+    }
+
     public void addNewImage(Uri newImg) {
 
     }
