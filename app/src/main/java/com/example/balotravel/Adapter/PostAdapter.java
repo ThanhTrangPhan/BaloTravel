@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.balotravel.CommentActivity;
 import com.example.balotravel.FollowersActivity;
 import com.example.balotravel.Fragment.PostDetailFragment;
-import com.example.balotravel.Fragment.UserFragment;
+import com.example.balotravel.Fragment.ProfileFragment;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
@@ -79,11 +79,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
             @Override
             public void onClick(View view) {
                 if (holder.like.getTag().equals("like")) {
-                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId())
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(post.getPostId())
                             .child(firebaseUser.getUid()).setValue(true);
                     //addNotification(post.getPostPublisher(), post.getPostId());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId())
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(post.getPostId())
                             .child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -110,7 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 editor.apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserFragment()).commit();
+                        new ProfileFragment()).commit();
             }
         });
 
@@ -122,7 +122,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 editor.apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserFragment()).commit();
+                        new ProfileFragment()).commit();
             }
         });
 
@@ -134,7 +134,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 editor.apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserFragment()).commit();
+                        new ProfileFragment()).commit();
             }
         });
 //
@@ -252,7 +252,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
     }
 
     private void publisherInfo(ImageView image_profile, TextView username, TextView publisher, String userId){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(userId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -296,7 +296,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Saves").child(firebaseUser.getUid());
+                .child("saves").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -352,7 +352,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
     }
 
     private void getText(String postid, final EditText editText){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts")
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts")
                 .child(postid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -4,18 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.6722222222222223" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/drawable/ic_baseline_account_box_24.xml" value="0.1" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_main.xml" value="1.0" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/activity_post.xml" value="0.25" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_home.xml" value="0.11639492753623189" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/fragment_user.xml" value="1.0" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/post_item.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Admin/Downloads/BaloTravel/app/src/main/res/layout/row_posts.xml" value="0.22" />
-        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_login.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_main.xml" value="0.2351851851851852" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_post.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/activity_register.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/fragment_bookmark.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/fragment_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nguye/AndroidStudioProjects/BaloTravel/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.2725" />
         <entry key="app/src/main/res/drawable/face.xml" value="0.238" />
@@ -31,6 +27,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.238" />
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.14065840102607952" />
         <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.2817443351859769" />
         <entry key="app/src/main/res/layout/activity_followers.xml" value="0.2817443351859769" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28730226592560926" />
@@ -51,7 +48,7 @@
         <entry key="app/src/main/res/layout/post_item.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/row_posts.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/splashscreen.xml" value="0.23958333333333334" />
-        <entry key="app/src/main/res/layout/user_item.xml" value="0.21975203078238564" />
+        <entry key="app/src/main/res/layout/user_item.xml" value="0.33" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.35" />
         <entry key="app/src/main/res/xml/tabs.xml" value="0.28804347826086957" />
       </map>

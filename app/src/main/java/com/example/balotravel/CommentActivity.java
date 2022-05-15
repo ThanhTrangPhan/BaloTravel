@@ -96,7 +96,7 @@ public class CommentActivity extends AppCompatActivity {
 
     private void addComment(){
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child(postid);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
 
         String commentid = reference.push().getKey();
 
@@ -112,7 +112,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void addNotification(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(publisherid);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("notifications").child(publisherid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
@@ -124,7 +124,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void getImage(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,7 +140,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void readComments(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child(postid);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

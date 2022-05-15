@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,9 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         search_bar = view.findViewById(R.id.search_bar);
-
         userList = new ArrayList<>();
-        userAdapter = new UserAdapter(getContext(), userList, true);
+        userAdapter = new UserAdapter(this.getContext(), userList, true);
         recyclerView.setAdapter(userAdapter);
 
         readUsers();
@@ -75,7 +74,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void searchUsers(String s){
-        Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("username")
+        Query query = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users").orderByChild("username")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
 
@@ -99,9 +98,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void readUsers() {
-
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -111,6 +108,7 @@ public class SearchFragment extends Fragment {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
                         userList.add(user);
+                        Log.d("Users","user "+user.getUsername());
                     }
 
                     userAdapter.notifyDataSetChanged();

@@ -1,6 +1,7 @@
 package com.example.balotravel.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class HomepageFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(),postList);
         recyclerView.setAdapter(postAdapter);
+        Log.d("Home","inside homepage");
         checkFollowing();
         return view;
     }
@@ -47,7 +49,7 @@ public class HomepageFragment extends Fragment {
     private void checkFollowing(){
         followingList = new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows")
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("follows")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
         reference.addValueEventListener(new ValueEventListener() {
@@ -67,7 +69,7 @@ public class HomepageFragment extends Fragment {
         });
     }
 
-    private  void readPosts(){
+    private void readPosts(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,6 +78,7 @@ public class HomepageFragment extends Fragment {
                 for(DataSnapshot _snapshot : snapshot.getChildren()){
                     Post post = _snapshot.getValue(Post.class);
                     for(String id : followingList){
+                        Log.d("post",post.getPostPublisher());
                         if(post.getPostPublisher().equals(id)){
                             postList.add(post);
                         }

@@ -1,22 +1,22 @@
 package com.example.balotravel.Adapter;
 
 import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.example.balotravel.Fragment.UserFragment;
+import com.example.balotravel.Fragment.ProfileFragment;
 import com.example.balotravel.MainActivity;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
@@ -27,18 +27,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
+import static android.content.Context.MODE_PRIVATE;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolder> {
 
     private Context mContext;
     private List<User> mUsers;
     private boolean isFragment;
-
     private FirebaseUser firebaseUser;
 
     public UserAdapter(Context context, List<User> users, boolean isFragment){
@@ -60,7 +61,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         final User user = mUsers.get(position);
-
         holder.btn_follow.setVisibility(View.VISIBLE);
         isFollowing(user.getUserId(), holder.btn_follow);
 
@@ -81,7 +81,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                     editor.apply();
 
                     ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new UserFragment()).commit();
+                            new ProfileFragment()).commit();
                 } else {
                     Intent intent = new Intent(mContext, MainActivity.class);
                     intent.putExtra("publisherid", user.getUserId());
@@ -93,17 +93,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         holder.btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.btn_follow.getText().toString().equals("follow")) {
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(firebaseUser.getUid())
+                if (holder.btn_follow.getText().toString().equals("Theo dõi")) {
+
+                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).setValue(true);
                     FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).setValue(true);
 
                     addNotification(user.getUserId());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(firebaseUser.getUid())
+                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).removeValue();
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
+                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -112,7 +113,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
     }
 
     private void addNotification(String userid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("notifications").child(userid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
@@ -149,15 +150,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Follow").child(firebaseUser.getUid()).child("following");
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference()
+                .child("follows").child(firebaseUser.getUid()).child("following");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(userid).exists()){
-                    button.setText("following");
+                    button.setText("Đã theo dõi");
                 } else{
-                    button.setText("follow");
+                    button.setText("Theo dõi");
                 }
             }
 

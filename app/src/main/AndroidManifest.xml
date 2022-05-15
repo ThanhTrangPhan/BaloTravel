@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.balotravel">
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -9,7 +10,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.BaloTravel">
-
+        <activity android:name=".PlaceListOnMapActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".CreateNewJouneyActivity"
             android:exported="true" />
@@ -23,6 +25,9 @@
             android:name=".PostActivity"
             android:exported="false" />
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
@@ -33,14 +38,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
+
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBT5Hyl1QUbYmPb2vNsE4-xxJl5K0LDuMk"/>
-<!--             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts"  -->
-      />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <!--             android:name="preloaded_fonts"
+                    android:resource="@array/preloaded_fonts"  -->
+        />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>
