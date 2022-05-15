@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -118,8 +119,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     }
 
     @Override
-    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place) {
-        placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress(), place.getLatLng()));
+    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place, ArrayList <Uri> imageList) {
+        placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress(), place.getLatLng(), imageList));
         adapter = new PlaceListViewAdapter(placeList, this);
         recyclerView.setAdapter(adapter);
         Log.i("Place List:", place.getLatLng().toString());

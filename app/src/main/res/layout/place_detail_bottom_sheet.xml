@@ -28,7 +28,7 @@
         android:id="@+id/placeMore"/>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/bannerView"
         android:layout_width="wrap_content"
         android:layout_height="251dp"
         android:layout_marginTop="16dp"
@@ -36,27 +36,43 @@
         android:baselineAlignBottom="false"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <RelativeLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="80dp">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="false"
-            android:layout_marginLeft="73dp"
-            android:layout_weight="1"
-            android:baselineAlignBottom="true"
-            android:contentDescription="Thêm ảnh mới"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+            <RelativeLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/uploadedPictureLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal">
+                </LinearLayout>
+
+
+                <ImageButton
+                    android:id="@+id/uploadButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginLeft="83dp"
+                    android:layout_toEndOf="@+id/uploadedPictureLayout"
+                    android:layout_weight="1"
+                    android:baselineAlignBottom="true"
+                    android:contentDescription="Thêm ảnh mới"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <Button
         android:id="@+id/addToPlaceListBtn"
