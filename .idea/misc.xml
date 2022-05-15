@@ -39,7 +39,6 @@
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.345" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.345" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.238" />
-
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.14065840102607952" />
         <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_followers.xml" value="0.2817443351859769" />
@@ -56,15 +55,13 @@
         <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog_item.xml" value="0.1140625" />
         <entry key="app/src/main/res/layout/fragment_post_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.23958333333333334" />
-
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/fragment_user.xml" value="0.28730226592560926" />
+        <entry key="app/src/main/res/layout/place_detail_bottom_sheet.xml" value="0.24791666666666667" />
         <entry key="app/src/main/res/layout/post_item.xml" value="0.28730226592560926" />
-
         <entry key="app/src/main/res/layout/row_posts.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/splashscreen.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/user_item.xml" value="0.21975203078238564" />
-
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.35" />
         <entry key="app/src/main/res/xml/tabs.xml" value="0.28804347826086957" />
       </map>

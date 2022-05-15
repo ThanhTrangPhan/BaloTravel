@@ -36,18 +36,32 @@
         android:baselineAlignBottom="false"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="69dp"
-            android:layout_height="70dp" />
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
 
-        <Button
-            android:id="@+id/addToPlaceListBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thêm điểm đến này" />
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="73dp"
+            android:layout_weight="1"
+            android:baselineAlignBottom="true"
+            android:contentDescription="Thêm ảnh mới"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/addToPlaceListBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm điểm đến này" />
+
 </LinearLayout>
