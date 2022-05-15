@@ -10,7 +10,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.BaloTravel">
-
+        <activity android:name=".PlaceListOnMapActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".CreateNewJouneyActivity"
             android:exported="true" />

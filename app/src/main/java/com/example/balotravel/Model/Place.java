@@ -13,6 +13,7 @@ public class Place implements Serializable {
  //   private LatLng latLng;
     private String startAt;
     private String finishAt;
+    private String image_place;
 
     public Place(String id, String name, String address, LatLng latLng) {
         this.id = id;
@@ -91,7 +92,15 @@ public class Place implements Serializable {
         this.longitude = longitude;
     }
 
-//    public LatLng getLatLng() {
+    public String getImage_place() {
+        return image_place;
+    }
+
+    public void setImage_place(String image_place) {
+        this.image_place = image_place;
+    }
+
+    //    public LatLng getLatLng() {
 //        return latLng;
 //    }
 //

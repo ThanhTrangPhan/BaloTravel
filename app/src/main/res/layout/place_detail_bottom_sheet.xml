@@ -28,13 +28,13 @@
         android:id="@+id/placeMore"/>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imagePlace"
         android:layout_width="wrap_content"
         android:layout_height="251dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:baselineAlignBottom="false"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        tools:srcCompat="@drawable/bg2" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,6 +44,8 @@
             android:id="@+id/addToPlaceListBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thêm điểm đến này" />
+            android:fontFamily="sans-serif-medium"
+            android:includeFontPadding="false"
+            android:text="Thêm điểm đến" />
     </LinearLayout>
 </LinearLayout>
