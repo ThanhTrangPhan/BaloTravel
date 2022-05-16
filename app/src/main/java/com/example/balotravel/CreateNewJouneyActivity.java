@@ -78,7 +78,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
-                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
+                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", mAuth.getUid(), "", edtJourneyDescription.getText().toString() ));
                 mDatabase.child(key).child("places").setValue(placeList);
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
             }
