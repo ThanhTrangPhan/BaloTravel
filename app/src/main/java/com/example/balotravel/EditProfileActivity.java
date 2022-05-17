@@ -35,6 +35,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -47,6 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
     DatabaseReference mData;
     ImageView img;
     User currentUser;
+    Uri uri;
     boolean isImageClicked =false;
 //    DatabaseReference reference;
 //    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
@@ -85,7 +88,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
                isImageClicked = true;
                Log.d("image","Image: "+isImageClicked);
-               Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+               Intent intent = new Intent(Intent.ACTION_PICK);
+               intent.setType("image/*");
                startActivityForResult(intent,REQUEST_CODE_IMAGE);
            }
        });
@@ -167,6 +171,7 @@ public class EditProfileActivity extends AppCompatActivity {
                    mDatabase.child("users").child(mAuth.getUid()).setValue(user);
 
                }
+               
                Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
                startActivity(intent);
            }
@@ -177,9 +182,18 @@ public class EditProfileActivity extends AppCompatActivity {
                StorageReference mountainsRef = null;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null){
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            img.setImageBitmap(bitmap);
+        if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null && data.getData() != null){
+           uri = data.getData();
+           try {
+               Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+               img.setImageBitmap(bitmap);
+           } catch (FileNotFoundException e) {
+               e.printStackTrace();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
