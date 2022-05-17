@@ -26,7 +26,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.345" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.238" />
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.14065840102607952" />
-        <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_create_new_jouney.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.2817443351859769" />
         <entry key="app/src/main/res/layout/activity_followers.xml" value="0.2817443351859769" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />

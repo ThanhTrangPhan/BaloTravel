@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.balotravel.Model.Post;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -19,14 +20,20 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +55,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<com.example.balotravel.Model.Place>();
     protected EditText edtJourneyDescription;
     protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
+    protected StorageReference mStorage;
+
     protected Button seeOnMapBtn;
     protected Button saveBtn;
 
@@ -57,6 +66,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         setContentView(R.layout.activity_create_new_jouney);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mStorage = FirebaseStorage.getInstance().getReference("posts");
         editText = findViewById(R.id.placeInput);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +93,42 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
+
                 mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
-                mDatabase.child(key).child("places").setValue(placeList);
+
+
+                for (int i=0; i<= placeList.size()-1; i++) {
+                    mDatabase.child(key).child("places").child(String.valueOf(i)).child("address").setValue(placeList.get(i).getAddress());
+                    mDatabase.child(key).child("places").child(String.valueOf(i)).child("name").setValue(placeList.get(i).getName());
+                    mDatabase.child(key).child("places").child(String.valueOf(i)).child("latitude").setValue(placeList.get(i).getLatitude());
+                    mDatabase.child(key).child("places").child(String.valueOf(i)).child("longitute").setValue(placeList.get(i).getLongitude());
+                    mDatabase.child(key).child("places").child(String.valueOf(i)).child("id").setValue(placeList.get(i).getId());
+
+                    for (int j=0; j<= placeList.get(i).getImageList().size()-1; j++) {
+                        int numberI = i;
+                        int numberJ = j;
+                        Uri image = placeList.get(i).getImageList().get(j);
+                        ContentResolver cR = getContentResolver();
+                        MimeTypeMap mime = MimeTypeMap.getSingleton();
+                        String imageExtension = mime.getExtensionFromMimeType(cR.getType(image));
+
+                        StorageReference fileReference = mStorage.child(key).child("places").child(String.valueOf(j)).child("imageList").child(System.currentTimeMillis() + String.valueOf(j) + "." + imageExtension);
+                        fileReference.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                fileReference.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        final Uri downloadUrl = uri;
+                                        String imageLink = downloadUrl.toString();
+                                        mDatabase.child(key).child("places").child(String.valueOf(numberI)).child("imageList").child(String.valueOf(numberJ)).setValue(imageLink);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
             }
         });
