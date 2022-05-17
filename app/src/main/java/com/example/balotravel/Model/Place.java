@@ -96,6 +96,7 @@ public class Place implements Serializable {
         this.longitude = longitude;
     }
 
+
     public ArrayList<Uri> getImageList() {
         return imageList;
     }
@@ -108,6 +109,7 @@ public class Place implements Serializable {
 
     }
 //    public LatLng getLatLng() {
+
 //        return latLng;
 //    }
 //
