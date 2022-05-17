@@ -15,7 +15,7 @@
         android:layout_height="62dp"
         android:layout_marginTop="12dp"
         android:ems="10"
-        android:hint="Tìm kiếm điểm đến"
+        android:hint="Thêm điểm đến"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="31dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="serif"
             android:text="Điểm đến của tôi:"
             android:textSize="16sp"
@@ -39,14 +39,14 @@
 
         <Button
             android:id="@+id/seeOnMapBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="176dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="31dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="serif"
             android:text="Xem trên bản đồ"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:layout_marginLeft="100dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/placeInput" />
     </LinearLayout>
@@ -55,9 +55,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activePlacesView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_marginTop="16dp"
-        android:minHeight="100dp" />
+        android:minHeight="300dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -85,7 +85,7 @@
         android:layout_gravity="end"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="SAVE"
+        android:text="LƯU LẠI"
         android:textColor="#212121"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
