@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,9 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class StartActivity extends AppCompatActivity {
    private static int SPLASH_SCREEN = 5000;
@@ -35,7 +31,7 @@ public class StartActivity extends AppCompatActivity {
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
         //Hooks
-        image = findViewById(R.id.imageView);
+        image = findViewById(R.id.imageToUploadView);
         logo = findViewById(R.id.textView);
         slogan = findViewById(R.id.textView2);
 

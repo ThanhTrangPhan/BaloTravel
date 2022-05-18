@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -37,7 +38,7 @@ import androidx.fragment.app.Fragment;
 
 
 public class ProfileFragment extends Fragment {
-
+    String db = "https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app";
     ImageView image_profile, options;
     TextView posts, followers, following, fullname, bio, username,phoneNum;
     Button edit_profile;
@@ -45,13 +46,15 @@ public class ProfileFragment extends Fragment {
     User currentUser;
 
     protected FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance(db).getReference();
 
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+//        SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
+//        currentUser.setUserId(prefs.getString("profileid", "none"));
         return view;
     }
 
@@ -97,10 +100,9 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        currentUser=new User();
-
-
+        // get all information of user
+        currentUser = new User();
+        currentUser.setUserId(mAuth.getCurrentUser().getUid());
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
         followers = view.findViewById(R.id.followers);
@@ -117,6 +119,59 @@ public class ProfileFragment extends Fragment {
                 intent.putExtra("currentUser",currentUser);
                 startActivity(intent);
 
+        });
+
+        checkPost();
+        checkFollowers();
+    }
+
+    private void checkFollowers() {
+        DatabaseReference reference = mDatabase.child("follows").child(currentUser.getUserId()).child("followers");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                followers.setText(""+dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference1 = mDatabase.child("follows").child(currentUser.getUserId()).child("following");
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                following.setText(""+dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void checkPost() {
+        DatabaseReference ref = mDatabase.child("posts");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int numPost=0;
+                for(DataSnapshot _snapshot: snapshot.getChildren()){
+                    Post p = _snapshot.getValue(Post.class);
+                    Log.d("My post",p.getPostPublisher() + " current user " + currentUser.getUserId()+" " + currentUser.getFullname());
+                    if(p.getPostPublisher() == currentUser.getUserId()){
+                        ++numPost;
+                    }
+                }
+                posts.setText(String.valueOf(numPost));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Num of MyPost","Error show num of MyPost");
+            }
         });
     }
 }
