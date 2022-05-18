@@ -41,7 +41,7 @@
         <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog.xml" value="0.1140625" />
         <entry key="app/src/main/res/layout/fragment_popup_detail_dialog_list_dialog_item.xml" value="0.1140625" />
         <entry key="app/src/main/res/layout/fragment_post_detail.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.23958333333333334" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/fragment_user.xml" value="0.28730226592560926" />
         <entry key="app/src/main/res/layout/place_detail_bottom_sheet.xml" value="0.165" />

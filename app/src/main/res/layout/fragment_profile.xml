@@ -206,7 +206,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/my_fotos"
+                    android:id="@+id/my_post"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -216,7 +216,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/saved_fotos"
+                    android:id="@+id/saved_places"
                     style="?android:attr/buttonBarButtonStyle"
                     android:padding="5dp"
                     android:layout_width="0dp"
