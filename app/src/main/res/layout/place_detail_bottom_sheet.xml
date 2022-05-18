@@ -30,7 +30,7 @@
     <ImageView
         android:id="@+id/bannerView"
         android:layout_width="wrap_content"
-        android:layout_height="251dp"
+        android:layout_height="76dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:baselineAlignBottom="false"
