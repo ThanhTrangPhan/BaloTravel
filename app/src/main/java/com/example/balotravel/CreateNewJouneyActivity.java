@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -59,6 +62,10 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     protected Button seeOnMapBtn;
     protected Button saveBtn;
+    protected Button changeCoverImgBtn;
+    protected ImageView coverImage;
+    protected Uri coverImageUri;
+    protected String coverImageLink = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +94,13 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         edtJourneyDescription = (EditText) findViewById(R.id.journeyDescription);
-
+        coverImage = (ImageView) findViewById(R.id.coverImage);
         saveBtn = (Button) findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
-
-                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
-
+                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", null, edtJourneyDescription.getText().toString() ));
 
                 for (int i=0; i<= placeList.size()-1; i++) {
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("address").setValue(placeList.get(i).getAddress());
@@ -103,6 +108,29 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("latitude").setValue(placeList.get(i).getLatitude());
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("longitute").setValue(placeList.get(i).getLongitude());
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("id").setValue(placeList.get(i).getId());
+
+                    if (coverImageUri != null) {
+                        ContentResolver cR2 = getContentResolver();
+                        MimeTypeMap mime2 = MimeTypeMap.getSingleton();
+                        String imageExtension2 = mime2.getExtensionFromMimeType(cR2.getType(coverImageUri));
+                        StorageReference fileReference2 = mStorage.child(key).child("postImage").child(System.currentTimeMillis() + "." + imageExtension2);
+                        fileReference2.putFile(coverImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                fileReference2.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        final Uri downloadUrl2 = uri;
+                                        coverImageLink = downloadUrl2.toString();
+                                        mDatabase.child(key).child("postImage").setValue(coverImageLink);
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+
 
                     for (int j=0; j<= placeList.get(i).getImageList().size()-1; j++) {
                         int numberI = i;
@@ -137,14 +165,27 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
         seeOnMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateNewJouneyActivity.this, PlaceListOnMapActivity.class);
-                intent.putExtra("BUNDLE", placeList);
-                startActivity(intent);
+                if (placeList.size() > 0) {
+                    Intent intent = new Intent(CreateNewJouneyActivity.this, PlaceListOnMapActivity.class);
+                    intent.putExtra("BUNDLE", placeList);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lỗi: Không có địa điểm nào", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        changeCoverImgBtn = (Button) findViewById(R.id.changeCoverImgBtn);
+        changeCoverImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galaryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galaryIntent, 1);
+            }
+        });
     }
 
     @Override
@@ -161,6 +202,12 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            this.coverImageUri = data.getData();
+            coverImage.setImageURI(this.coverImageUri);
+
+        }
     }
 
     @Override
@@ -173,6 +220,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP
             | ItemTouchHelper.DOWN ,  ItemTouchHelper.LEFT) {
+
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
@@ -181,7 +229,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
             Collections.swap(placeList, fromPosition, toPosition);
             recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
-            return false;
+            return true;
         }
 
         @Override
@@ -189,6 +237,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             placeList.remove(viewHolder.getAdapterPosition());
             recyclerView.getAdapter().notifyDataSetChanged();
         }
+
     };
 }
 
