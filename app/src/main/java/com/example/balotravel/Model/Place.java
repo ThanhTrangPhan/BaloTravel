@@ -34,6 +34,8 @@ public class Place implements Serializable {
         this.name = name;
         this.address = address;
 //        this.latLng = latLng;
+        this.latitude = latLng.latitude;
+        this.longitude = latLng.longitude;
         this.startAt = startAt;
         this.finishAt = finishAt;
     }
