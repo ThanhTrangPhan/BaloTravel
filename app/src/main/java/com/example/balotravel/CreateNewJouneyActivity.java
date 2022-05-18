@@ -94,6 +94,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
 
+
                 mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
 
 
@@ -128,7 +129,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                         });
                     }
                 }
-
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
             }
         });
