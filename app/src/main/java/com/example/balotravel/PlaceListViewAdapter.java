@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,10 +40,12 @@ public class PlaceListViewAdapter extends RecyclerView.Adapter<PlaceListViewAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Place place = placeList.get(position);
 
-        holder.placeName.setText(place.getName());
+        holder.placeName.setText(String.valueOf(holder.getBindingAdapterPosition() + 1) + ". " + place.getName());
         holder.placeAddress.setText(place.getAddress());
 
-        for (int i=0; i<place.getImageList().size(); i++) {
+        if (place.getImageList().size() == 0) {
+            holder.uploadedPictureLayout.setVisibility(View.INVISIBLE);
+        } else for (int i=0; i<place.getImageList().size(); i++) {
             Uri selectedImage = place.getImageList().get(i);
             ImageView imageToUpload = new ImageView(this.context);
             imageToUpload.setImageURI(selectedImage);
