@@ -100,7 +100,10 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
-                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", null, edtJourneyDescription.getText().toString() ));
+
+
+                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
+
 
                 for (int i=0; i<= placeList.size()-1; i++) {
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("address").setValue(placeList.get(i).getAddress());
@@ -156,7 +159,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                         });
                     }
                 }
-
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
             }
         });
@@ -240,4 +242,3 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     };
 }
-

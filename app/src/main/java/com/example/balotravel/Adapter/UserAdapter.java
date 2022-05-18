@@ -36,7 +36,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolder> {
-
+    private String db = "https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app";
     private Context mContext;
     private List<User> mUsers;
     private boolean isFragment;
@@ -95,16 +95,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             public void onClick(View view) {
                 if (holder.btn_follow.getText().toString().equals("Theo dõi")) {
 
-                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(firebaseUser.getUid())
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).setValue(true);
-                    FirebaseDatabase.getInstance().getReference().child("follows").child(user.getUserId())
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).setValue(true);
 
                     addNotification(user.getUserId());
                 } else {
-                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(firebaseUser.getUid())
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(firebaseUser.getUid())
                             .child("following").child(user.getUserId()).removeValue();
-                    FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("follows").child(user.getUserId())
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(user.getUserId())
                             .child("followers").child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -113,7 +113,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
     }
 
     private void addNotification(String userid){
-        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("notifications").child(userid);
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("notifications").child(userid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
@@ -150,7 +150,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference()
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference()
                 .child("follows").child(firebaseUser.getUid()).child("following");
         reference.addValueEventListener(new ValueEventListener() {
             @Override

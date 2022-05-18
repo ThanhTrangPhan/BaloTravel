@@ -32,49 +32,57 @@ public class HomepageFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_home, container,false);
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view_home);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         postList = new ArrayList<>();
-        postAdapter = new PostAdapter(getContext(),postList);
+        postAdapter = new PostAdapter(this.getContext(),postList);
         recyclerView.setAdapter(postAdapter);
         Log.d("Home","inside homepage");
         checkFollowing();
+        //readPosts();
         return view;
     }
 
     private void checkFollowing(){
         followingList = new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("follows")
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("follows")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
-        reference.addValueEventListener(new ValueEventListener() {
+        Log.d("inside","22");
+
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 followingList.clear();
-                for(DataSnapshot _snapshot : snapshot.getChildren()){
+                Log.d("inside","22333");
+                for(DataSnapshot _snapshot : dataSnapshot.getChildren()){
+                    Log.d("following list ",_snapshot.getKey());
                     followingList.add(_snapshot.getKey());
                 }
                 readPosts();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError databaseError) {}
+        };
 
-            }
-        });
+        reference.addListenerForSingleValueEvent(eventListener);
+        reference.addValueEventListener(eventListener);
     }
 
     private void readPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
+        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("posts");
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
+                Log.d("post","readPost");
                 for(DataSnapshot _snapshot : snapshot.getChildren()){
                     Post post = _snapshot.getValue(Post.class);
                     for(String id : followingList){
@@ -89,7 +97,7 @@ public class HomepageFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("The read failed: " + error.getCode());
             }
         });
     }
