@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.balotravel.Model.Post;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.example.balotravel.Model.User;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -66,9 +67,11 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     protected EditText editText;
     protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<>();
     protected EditText edtJourneyDescription;
-    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
-    protected StorageReference mStorage;
 
+    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
+    protected DatabaseReference mUsers = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users");
+    protected StorageReference mStorage;
+    private User currentUser;
     protected Button seeOnMapBtn;
     protected Button saveBtn;
     protected Button changeCoverImgBtn;
@@ -97,7 +100,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_jouney);
-
+        currentUser = new User();
+        currentUser.setUserId(mAuth.getCurrentUser().getUid());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mStorage = FirebaseStorage.getInstance().getReference("posts");
@@ -128,7 +132,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                 String key = mDatabase.push().getKey();
 
 
-                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
+                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", currentUser.getUserId(), "", edtJourneyDescription.getText().toString() ));
 
 
                 for (int i=0; i<= placeList.size()-1; i++) {
@@ -185,6 +189,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                     }
                 }
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CreateNewJouneyActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

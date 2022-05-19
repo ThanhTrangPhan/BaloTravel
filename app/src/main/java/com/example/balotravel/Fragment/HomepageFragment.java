@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomepageFragment extends Fragment {
+    private String urlFirebase = "https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
@@ -50,7 +51,7 @@ public class HomepageFragment extends Fragment {
     private void checkFollowing(){
         followingList = new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("follows")
+        DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("follows")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
         Log.d("inside","22");
@@ -76,7 +77,7 @@ public class HomepageFragment extends Fragment {
     }
 
     private void readPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("posts");
+        DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("posts");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
