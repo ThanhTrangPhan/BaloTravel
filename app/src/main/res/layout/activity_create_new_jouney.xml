@@ -119,6 +119,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 
+            <Button
+                android:id="@+id/smartSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="Sắp xếp thông minh"
+                app:icon="@android:drawable/ic_dialog_map" />
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
