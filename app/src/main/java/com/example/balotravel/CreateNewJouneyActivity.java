@@ -181,6 +181,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                                     public void onSuccess(Uri uri) {
                                         final Uri downloadUrl = uri;
                                         String imageLink = downloadUrl.toString();
+                                        Log.d("imaage upload", imageLink);
                                         mDatabase.child(key).child("places").child(String.valueOf(numberI)).child("imageList").child(String.valueOf(numberJ)).setValue(imageLink);
                                     }
                                 });
