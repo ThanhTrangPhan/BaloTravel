@@ -167,13 +167,13 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                     for (int j=0; j<= placeList.get(i).getImageList().size()-1; j++) {
                         int numberI = i;
                         int numberJ = j;
-                        Uri image = placeList.get(i).getImageList().get(j);
+                        String image = placeList.get(i).getImageList().get(j);
                         ContentResolver cR = getContentResolver();
                         MimeTypeMap mime = MimeTypeMap.getSingleton();
-                        String imageExtension = mime.getExtensionFromMimeType(cR.getType(image));
+                        String imageExtension = mime.getExtensionFromMimeType(cR.getType(Uri.parse(image)));
 
                         StorageReference fileReference = mStorage.child(key).child("places").child(String.valueOf(j)).child("imageList").child(System.currentTimeMillis() + String.valueOf(j) + "." + imageExtension);
-                        fileReference.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        fileReference.putFile(Uri.parse(image)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 fileReference.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
@@ -356,7 +356,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     }
 
     @Override
-    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place, ArrayList <Uri> imageList) {
+    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place, ArrayList <String> imageList) {
         placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress(), place.getLatLng(), imageList));
         adapter = new PlaceListViewAdapter(placeList, this);
         recyclerView.setAdapter(adapter);
