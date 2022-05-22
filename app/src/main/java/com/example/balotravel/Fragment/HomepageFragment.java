@@ -1,6 +1,8 @@
 package com.example.balotravel.Fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.balotravel.Adapter.PostAdapter;
+import com.example.balotravel.Model.Place;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,10 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomepageFragment extends Fragment {
+    private String urlFirebase = "https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
     private List<String> followingList;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_home, container,false);
@@ -41,7 +47,6 @@ public class HomepageFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(this.getContext(),postList);
         recyclerView.setAdapter(postAdapter);
-        Log.d("Home","inside homepage");
         checkFollowing();
         //readPosts();
         return view;
@@ -50,7 +55,7 @@ public class HomepageFragment extends Fragment {
     private void checkFollowing(){
         followingList = new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("follows")
+        DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("follows")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
         Log.d("inside","22");
@@ -76,23 +81,42 @@ public class HomepageFragment extends Fragment {
     }
 
     private void readPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("posts");
+        DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("posts");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
-                Log.d("post","readPost");
                 for(DataSnapshot _snapshot : snapshot.getChildren()){
+                    // get Post
                     Post post = _snapshot.getValue(Post.class);
+                    post.setPostId(_snapshot.getKey());
                     for(String id : followingList){
-                        Log.d("post",post.getPostPublisher());
+                        // check id publisher is equal to id in following list
                         if(post.getPostPublisher().equals(id)){
+                            Log.d(" ",post.getPostPublisher());
+                            ArrayList<Place> _p = new ArrayList<>();
+                            for(DataSnapshot s:_snapshot.child("places").getChildren()){
+                                Place p = s.getValue(Place.class);
+                                ArrayList<String> imgs = new ArrayList<>();
+                                for(DataSnapshot _s : s.child("imageList").getChildren()){
+                                    String str = _s.getValue(String.class);
+                                    Log.d("imaf",str);
+                                    imgs.add(str);
+                                }
+                                p.setImageList(imgs);
+                                Log.d("places",p.getAddress());
+                                _p.add(p);
+                            }
+
+                            post.setPlaceList(_p);
                             postList.add(post);
+                            postAdapter.notifyDataSetChanged();
+                            break;
                         }
                     }
                 }
-                postAdapter.notifyDataSetChanged();
+
             }
 
             @Override

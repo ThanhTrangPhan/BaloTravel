@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.balotravel.Model.Post;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.example.balotravel.Model.User;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -66,9 +67,12 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     protected EditText editText;
     protected ArrayList <com.example.balotravel.Model.Place> placeList = new ArrayList<>();
     protected EditText edtJourneyDescription;
-    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
-    protected StorageReference mStorage;
 
+    protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
+    protected DatabaseReference mUsers = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users");
+    protected DatabaseReference firebaseDB = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+    protected StorageReference mStorage;
+    private User currentUser;
     protected Button seeOnMapBtn;
     protected Button saveBtn;
     protected Button changeCoverImgBtn;
@@ -97,7 +101,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_jouney);
-
+        currentUser = new User();
+        currentUser.setUserId(mAuth.getCurrentUser().getUid());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mStorage = FirebaseStorage.getInstance().getReference("posts");
@@ -126,10 +131,11 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
+                Log.d("post Id",key);
 
-
-                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", "", "", edtJourneyDescription.getText().toString() ));
-
+                mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", currentUser.getUserId(), "", edtJourneyDescription.getText().toString() ));
+                firebaseDB.child("likes").child(key).setValue(true);
+                firebaseDB.child("saves").child(key).setValue(true);
 
                 for (int i=0; i<= placeList.size()-1; i++) {
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("address").setValue(placeList.get(i).getAddress());
@@ -163,13 +169,13 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                     for (int j=0; j<= placeList.get(i).getImageList().size()-1; j++) {
                         int numberI = i;
                         int numberJ = j;
-                        Uri image = placeList.get(i).getImageList().get(j);
+                        String image = placeList.get(i).getImageList().get(j);
                         ContentResolver cR = getContentResolver();
                         MimeTypeMap mime = MimeTypeMap.getSingleton();
-                        String imageExtension = mime.getExtensionFromMimeType(cR.getType(image));
+                        String imageExtension = mime.getExtensionFromMimeType(cR.getType(Uri.parse(image)));
 
                         StorageReference fileReference = mStorage.child(key).child("places").child(String.valueOf(j)).child("imageList").child(System.currentTimeMillis() + String.valueOf(j) + "." + imageExtension);
-                        fileReference.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        fileReference.putFile(Uri.parse(image)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 fileReference.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
@@ -177,6 +183,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                                     public void onSuccess(Uri uri) {
                                         final Uri downloadUrl = uri;
                                         String imageLink = downloadUrl.toString();
+                                        Log.d("imaage upload", imageLink);
                                         mDatabase.child(key).child("places").child(String.valueOf(numberI)).child("imageList").child(String.valueOf(numberJ)).setValue(imageLink);
                                     }
                                 });
@@ -185,6 +192,8 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                     }
                 }
                 Toast.makeText(CreateNewJouneyActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CreateNewJouneyActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -350,7 +359,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
     }
 
     @Override
-    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place, ArrayList <Uri> imageList) {
+    public void onButtonClicked(com.google.android.libraries.places.api.model.Place place, ArrayList <String> imageList) {
         placeList.add( new com.example.balotravel.Model.Place(place.getId(), place.getName(), place.getAddress(), place.getLatLng(), imageList));
         adapter = new PlaceListViewAdapter(placeList, this);
         recyclerView.setAdapter(adapter);

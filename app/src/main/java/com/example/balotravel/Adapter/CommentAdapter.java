@@ -32,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageViewHolder> {
-
+    private String firebaseUrl = "https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private Context mContext;
     private List<Comment> mComment;
     private String postid;
@@ -86,23 +86,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
                 if (comment.getPublisher().equals(firebaseUser.getUid())) {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                    alertDialog.setTitle("Do you want to delete?");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "No",
+                    alertDialog.setTitle("Xác nhận xóa?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Không",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             });
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Có",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FirebaseDatabase.getInstance().getReference("Comments")
+                                    FirebaseDatabase.getInstance(firebaseUrl).getReference("comments")
                                             .child(postid).child(comment.getCommentid())
                                             .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
-                                                Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(mContext, "Xóa thành công!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -137,15 +137,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
     }
 
     private void getUserInfo(final ImageView imageView, final TextView username, String publisherid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Users").child(publisherid);
+        DatabaseReference reference = FirebaseDatabase.getInstance(firebaseUrl).getReference()
+                .child("users").child(publisherid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 Glide.with(mContext).load(user.getImage_profile()).into(imageView);
-                username.setText(user.getUsername());
+                username.setText(user.getFullname());
             }
 
             @Override

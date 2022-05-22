@@ -14,23 +14,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:orientation="vertical"
-        android:layout_toEndOf="@id/image_profile">
+        android:layout_toEndOf="@id/image_profile"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textStyle="bold"
             android:textColor="@color/tan"
-            android:id="@+id/username"/>
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/comment"
-            android:text=""
-            android:maxLines="5"/>
+            android:maxLines="5"
+            android:text="" />
 
     </LinearLayout>
 

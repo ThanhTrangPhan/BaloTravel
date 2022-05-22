@@ -12,6 +12,8 @@
         android:theme="@style/Theme.BaloTravel">
         <activity android:name=".PlaceListOnMapActivity"
             android:exported="false"></activity>
+        <activity android:name=".CommentActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".CreateNewJouneyActivity"
             android:exported="true"

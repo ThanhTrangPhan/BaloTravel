@@ -13,13 +13,12 @@ public class Place implements Serializable {
     private String address;
     private Double latitude;
     private Double longitude;
-
     private String startAt;
     private String finishAt;
     //private LatLng latLng;
-    private ArrayList <Uri> imageList = new ArrayList<>();
+    private ArrayList <String> imageList = new ArrayList<>();
 
-    public Place(String id, String name, String address, LatLng latLng, ArrayList <Uri> imageList) {
+    public Place(String id, String name, String address, LatLng latLng, ArrayList <String> imageList) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -99,11 +98,11 @@ public class Place implements Serializable {
         this.longitude = longitude;
     }
 
-    public ArrayList<Uri> getImageList() {
+    public ArrayList<String> getImageList() {
         return imageList;
     }
 
-    public void setImageList(ArrayList<Uri> imageList) {
+    public void setImageList(ArrayList<String> imageList) {
         this.imageList = imageList;
     }
 

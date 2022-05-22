@@ -46,17 +46,14 @@ public class PlaceListViewAdapter extends RecyclerView.Adapter<PlaceListViewAdap
         if (place.getImageList().size() == 0) {
             holder.uploadedPictureLayout.setVisibility(View.INVISIBLE);
         } else for (int i=0; i<place.getImageList().size(); i++) {
-            Uri selectedImage = place.getImageList().get(i);
+            String selectedImage = place.getImageList().get(i);
             ImageView imageToUpload = new ImageView(this.context);
-            imageToUpload.setImageURI(selectedImage);
+            imageToUpload.setImageURI(Uri.parse(selectedImage));
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(240,240);
             params.setMargins(0, 0, 10, 0);
             imageToUpload.setLayoutParams(params);
             holder.uploadedPictureLayout.addView(imageToUpload);
         }
-
-
-
 
 
         // setting the margin in linearlayout

@@ -34,7 +34,7 @@ public class PlaceDetailBottomSheet extends BottomSheetDialogFragment{
     private TextView placeAddressTxt;
     private LinearLayout uploadedPictureLayout;
     private BottomSheetListener mListener;
-    private ArrayList<Uri> imageList = new ArrayList<>();
+    private ArrayList<String> imageList = new ArrayList<>();
 
     public PlaceDetailBottomSheet(com.google.android.libraries.places.api.model.Place place) {
         this.place = place;
@@ -72,7 +72,7 @@ public class PlaceDetailBottomSheet extends BottomSheetDialogFragment{
     }
 
     public interface BottomSheetListener {
-        void onButtonClicked (com.google.android.libraries.places.api.model.Place place, ArrayList<Uri> imageList);
+        void onButtonClicked (com.google.android.libraries.places.api.model.Place place, ArrayList<String> imageList);
     }
 
     @Override
@@ -91,10 +91,10 @@ public class PlaceDetailBottomSheet extends BottomSheetDialogFragment{
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
+            String selectedImage = String.valueOf(data.getData());
             imageList.add(selectedImage);
             ImageView imageToUpload = new ImageView(getActivity());
-            imageToUpload.setImageURI(selectedImage);
+            imageToUpload.setImageURI(Uri.parse(selectedImage));
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(260,260);
 
             // setting the margin in linearlayout

@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
-
+    private String db ="https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private RecyclerView recyclerView;
     private CommentAdapter commentAdapter;
     private List<Comment> commentList;
@@ -50,7 +50,7 @@ public class CommentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comment);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Comments");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -82,7 +82,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (addcomment.getText().toString().equals("")){
-                    Toast.makeText(CommentActivity.this, "You can't send empty message", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentActivity.this, "Không thể để trống mục", Toast.LENGTH_SHORT).show();
                 } else {
                     addComment();
                 }
@@ -96,7 +96,7 @@ public class CommentActivity extends AppCompatActivity {
 
     private void addComment(){
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("comments").child(postid);
 
         String commentid = reference.push().getKey();
 
@@ -112,7 +112,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void addNotification(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("notifications").child(publisherid);
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("notifications").child(publisherid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
@@ -124,7 +124,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void getImage(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("users").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,7 +140,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void readComments(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("comments").child(postid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
