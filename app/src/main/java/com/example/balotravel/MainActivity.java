@@ -16,6 +16,7 @@ import com.example.balotravel.Fragment.HomepageFragment;
 import com.example.balotravel.Fragment.ProfileFragment;
 import com.example.balotravel.Fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationMenuView;
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_person:
                             selectedFragment = new ProfileFragment();
-                            SharedPreferences.Editor editor = getSharedPreferences("PREPS",MODE_PRIVATE).edit();
-//                            editor.putString("profileId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                            editor.apply();
+                            SharedPreferences.Editor editor = getSharedPreferences("PREFS",MODE_PRIVATE).edit();
+                            editor.putString("profileid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            editor.apply();
                             selectedFragment = new ProfileFragment();
                             break;
                     }

@@ -216,7 +216,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/saved_places"
+                    android:id="@+id/my_followers"
                     style="?android:attr/buttonBarButtonStyle"
                     android:padding="5dp"
                     android:layout_width="0dp"

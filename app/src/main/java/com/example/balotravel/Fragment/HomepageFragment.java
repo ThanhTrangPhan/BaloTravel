@@ -90,6 +90,7 @@ public class HomepageFragment extends Fragment {
                 for(DataSnapshot _snapshot : snapshot.getChildren()){
                     // get Post
                     Post post = _snapshot.getValue(Post.class);
+                    post.setPostId(_snapshot.getKey());
                     for(String id : followingList){
                         // check id publisher is equal to id in following list
                         if(post.getPostPublisher().equals(id)){

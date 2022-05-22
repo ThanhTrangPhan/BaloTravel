@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.balotravel.Adapter.MyPostAdapter;
 import com.example.balotravel.EditProfileActivity;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.Model.User;
@@ -27,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -35,6 +38,9 @@ import static android.content.Context.MODE_PRIVATE;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class ProfileFragment extends Fragment {
@@ -42,8 +48,13 @@ public class ProfileFragment extends Fragment {
     ImageView image_profile, options;
     TextView posts, followers, following, fullname, bio, username,phoneNum;
     Button edit_profile;
-
+    FirebaseUser firebaseUser;
+    String profileid;
     User currentUser;
+    ImageButton myPost,myFollowers;
+    private RecyclerView recyclerView;
+    private MyPostAdapter myPostAdapter;
+    private List<Post> postList;
 
     protected FirebaseAuth mAuth = FirebaseAuth.getInstance();
     protected DatabaseReference mDatabase = FirebaseDatabase.getInstance(db).getReference();
@@ -53,56 +64,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-//        SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
-//        currentUser.setUserId(prefs.getString("profileid", "none"));
-        return view;
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int i=0;
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    try {
-                        String value = (String) ds.getValue();
-                        if(i==0) currentUser.setBio(value);
-                        if(i==1) currentUser.setFullname(value);
-                        if(i==2) currentUser.setImage_profile(value);
-                        if(i==4) currentUser.setUserId(value);
-                        if(i==5) currentUser.setUsername(value);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                    }catch (ClassCastException e){
-                        long value= (long) ds.getValue();
-                        currentUser.setPhonenumber((int) value);
-                    }
-                    i++;
-                }
+        SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
+        profileid = prefs.getString("profileid", "none");
+        Log.d("profile id change to ",profileid);
 
-                bio.setText(currentUser.getBio());
-                fullname.setText(currentUser.getFullname());
-                phoneNum.setText("0" + currentUser.getPhonenumber()+"");
-                
-                Glide.with(ProfileFragment.this).load(Uri.parse(currentUser.getImage_profile())).into(image_profile);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        mDatabase.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(valueEventListener);
-
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // get all information of user
-        currentUser = new User();
-        currentUser.setUserId(mAuth.getCurrentUser().getUid());
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
         followers = view.findViewById(R.id.followers);
@@ -112,21 +80,132 @@ public class ProfileFragment extends Fragment {
         edit_profile = view.findViewById(R.id.edit_profile);
         username = view.findViewById(R.id.username);
         phoneNum = view.findViewById(R.id.tv_phone);
-
-
-        edit_profile.setOnClickListener(v->{
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                intent.putExtra("currentUser",currentUser);
-                startActivity(intent);
-
-        });
-
+        myPost = view.findViewById(R.id.my_post);
+        myFollowers = view.findViewById(R.id.my_followers);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
+        recyclerView.setLayoutManager(mLayoutManager);
+        postList = new ArrayList<>();
+        myPostAdapter = new MyPostAdapter(getContext(), postList);
+        recyclerView.setAdapter(myPostAdapter);
+        userInfo();
         checkPost();
         checkFollowers();
+        myPosts();
+
+        if (profileid.equals(firebaseUser.getUid())){
+            edit_profile.setText("Chỉnh sửa trang cá nhân ");
+        } else {
+            checkFollow();
+            myFollowers.setVisibility(View.GONE);
+        }
+
+        edit_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String btn = edit_profile.getText().toString();
+
+                if (btn.equals("Chỉnh sửa trang cá nhân")){
+                    Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                    intent.putExtra("currentUser",currentUser);
+                    startActivity(intent);
+
+                } else if (btn.equals("Theo dõi")){
+
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(firebaseUser.getUid())
+                            .child("following").child(profileid).setValue(true);
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(profileid)
+                            .child("followers").child(firebaseUser.getUid()).setValue(true);
+                    addNotification();
+                } else if (btn.equals("Đã theo dõi")){
+
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(firebaseUser.getUid())
+                            .child("following").child(profileid).removeValue();
+                    FirebaseDatabase.getInstance(db).getReference().child("follows").child(profileid)
+                            .child("followers").child(firebaseUser.getUid()).removeValue();
+
+                }
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        postList = new ArrayList<>();
+
+        // get all information of user
+        currentUser = new User();
+        currentUser.setUserId(mAuth.getCurrentUser().getUid());
+
+
+
+
+
+    }
+
+    private void addNotification(){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("notifications").child(profileid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", firebaseUser.getUid());
+        hashMap.put("text", "started following you");
+        hashMap.put("postid", "");
+        hashMap.put("ispost", false);
+
+        reference.push().setValue(hashMap);
+    }
+
+    private void userInfo(){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("users").child(profileid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (getContext() == null){
+                    return;
+                }
+                User user = dataSnapshot.getValue(User.class);
+
+                Glide.with(getContext()).load(user.getImage_profile()).into(image_profile);
+                username.setText(user.getFullname());
+                fullname.setText(" "+user.getFullname());
+                phoneNum.setText(" "+user.getPhonenumber());
+                bio.setText(user.getBio());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkFollow(){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference()
+                .child("follows").child(firebaseUser.getUid()).child("following");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(profileid).exists()){
+                    edit_profile.setText("Đã theo dõi");
+                } else{
+                    edit_profile.setText("Theo dõi");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void checkFollowers() {
-        DatabaseReference reference = mDatabase.child("follows").child(currentUser.getUserId()).child("followers");
+        DatabaseReference reference = mDatabase.child("follows").child(profileid).child("followers");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -139,7 +218,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        DatabaseReference reference1 = mDatabase.child("follows").child(currentUser.getUserId()).child("following");
+        DatabaseReference reference1 = mDatabase.child("follows").child(profileid).child("following");
         reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -160,8 +239,8 @@ public class ProfileFragment extends Fragment {
                 int numPost=0;
                 for(DataSnapshot _snapshot: snapshot.getChildren()){
                     Post p = _snapshot.getValue(Post.class);
-                    Log.d("My post",p.getPostPublisher() + " current user " + currentUser.getUserId()+" " + currentUser.getFullname());
-                    if(p.getPostPublisher() == currentUser.getUserId()){
+                    //Log.d("My post",p.getPostPublisher() + " current user " + currentUser.getUserId()+" " + currentUser.getFullname());
+                    if(p.getPostPublisher().equals(profileid)){
                         ++numPost;
                     }
                 }
@@ -174,4 +253,51 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+    private void myPosts(){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("posts");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Post post = snapshot.getValue(Post.class);
+                    if (post.getPostPublisher().equals(profileid)){
+                        postList.add(post);
+                    }
+                }
+                Collections.reverse(postList);
+                myPostAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+//    private void readSaves(){
+//        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("posts");
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                postList_saves.clear();
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                    Post post = snapshot.getValue(Post.class);
+//
+//                    for (String id : my) {
+//                        if (post.getPostid().equals(id)) {
+//                            postList_saves.add(post);
+//                        }
+//                    }
+//                }
+//                myFotosAdapter_saves.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }

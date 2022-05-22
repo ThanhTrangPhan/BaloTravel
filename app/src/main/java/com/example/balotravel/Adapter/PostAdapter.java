@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -33,6 +34,8 @@ import com.example.balotravel.Model.Place;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
-    private String db ="https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private String db ="https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private Context mContext;
     private List<Post> mPost;
     private DatabaseReference ref = FirebaseDatabase.getInstance(db).getReference();
@@ -72,7 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         final Post post = mPost.get(i);
         List<SlideModel> listPostImg = new ArrayList<>();
         ArrayList<Place> places = post.getPlaceList();
-
+        Log.d("post id", post.getPostId());
         for(Place _p : places){
             ArrayList<String> listImages = _p.getImageList();
             for(String _i : listImages){
@@ -105,10 +108,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
             holder.description.setText(post.getDescription());
         }
         publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getPostPublisher());
-        //isLiked(post.getPostId(), holder.like);
-        //isSaved(post.getPostId(), holder.save);
-//        nrLikes(holder.likes, post.getPostId());
-//        getCommetns(post.getPostId(), holder.comments);
+        isLiked(post.getPostId(), holder.like);
+        isSaved(post.getPostId(), holder.save);
+        nbLikes(holder.likes, post.getPostId());
+        getComments(post.getPostId(), holder.comment);
 
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,10 +119,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 if (holder.like.getTag().equals("like")) {
                     ref.child("likes").child(post.getPostId())
                             .child(firebaseUser.getUid()).setValue(true);
-                    //addNotification(post.getPostPublisher(), post.getPostId());
+                    addNotification(post.getPostPublisher(), post.getPostId());
                 } else {
                     ref.child("likes").child(post.getPostId())
                             .child(firebaseUser.getUid()).removeValue();
+                    deleteNotifications(post.getPostId(),firebaseUser.getUid());
                 }
             }
         });
@@ -366,7 +370,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
 
         getText(postid, editText);
 
-        alertDialog.setPositiveButton("Edit",
+        alertDialog.setPositiveButton("Sửa",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -374,11 +378,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("description", editText.getText().toString());
 
-                        FirebaseDatabase.getInstance().getReference("posts")
+                        FirebaseDatabase.getInstance(db).getReference("posts")
                                 .child(postid).updateChildren(hashMap);
                     }
                 });
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton("Hủy",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -395,6 +399,74 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 editText.setText(dataSnapshot.getValue(Post.class).getDescription());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void nbLikes(final TextView likes, String postId){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference().child("likes").child(postId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                likes.setText(dataSnapshot.getChildrenCount()+" thích");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void getComments(String postId, final TextView comments){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference().child("comments").child(postId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                comments.setText("Xem "+dataSnapshot.getChildrenCount()+" bình luận");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addNotification(String userid, String postid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("notifications").child(userid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", firebaseUser.getUid());
+        hashMap.put("text", "liked your post");
+        hashMap.put("postid", postid);
+        hashMap.put("ispost", true);
+
+        reference.push().setValue(hashMap);
+    }
+
+    private void deleteNotifications(final String postid, String userid){
+        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("notifications").child(userid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if (snapshot.child("postid").getValue().equals(postid)){
+                        snapshot.getRef().removeValue()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(mContext, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }
             }
 
             @Override

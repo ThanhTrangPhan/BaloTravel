@@ -70,6 +70,7 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
     protected DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("posts");
     protected DatabaseReference mUsers = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users");
+    protected DatabaseReference firebaseDB = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
     protected StorageReference mStorage;
     private User currentUser;
     protected Button seeOnMapBtn;
@@ -130,10 +131,11 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
-
+                Log.d("post Id",key);
 
                 mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", currentUser.getUserId(), "", edtJourneyDescription.getText().toString() ));
-
+                firebaseDB.child("likes").child(key).setValue(true);
+                firebaseDB.child("saves").child(key).setValue(true);
 
                 for (int i=0; i<= placeList.size()-1; i++) {
                     mDatabase.child(key).child("places").child(String.valueOf(i)).child("address").setValue(placeList.get(i).getAddress());
