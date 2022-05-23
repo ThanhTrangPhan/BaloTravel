@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
     Button edit_profile;
     FirebaseUser firebaseUser;
     String profileid;
-    User currentUser;
+    User user;
     ImageButton myPost,myFollowers;
     private RecyclerView recyclerView;
     private MyPostAdapter myPostAdapter;
@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
         myPosts();
         recyclerView.setVisibility(View.VISIBLE);
         if (profileid.equals(firebaseUser.getUid())){
-            edit_profile.setText("Chỉnh sửa trang cá nhân ");
+            edit_profile.setText("Chỉnh sửa trang cá nhân");
         } else {
             checkFollow();
             myFollowers.setVisibility(View.GONE);
@@ -109,7 +109,8 @@ public class ProfileFragment extends Fragment {
 
                 if (btn.equals("Chỉnh sửa trang cá nhân")){
                     Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                    intent.putExtra("currentUser",currentUser);
+
+                    intent.putExtra("currentUser",user);
                     startActivity(intent);
 
                 } else if (btn.equals("Theo dõi")){
@@ -160,14 +161,6 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // get all information of user
-        currentUser = new User();
-        currentUser.setUserId(mAuth.getCurrentUser().getUid());
-
-    }
 
     private void addNotification(){
         DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("notifications").child(profileid);
@@ -189,8 +182,8 @@ public class ProfileFragment extends Fragment {
                 if (getContext() == null){
                     return;
                 }
-                User user = dataSnapshot.getValue(User.class);
-
+                user = dataSnapshot.getValue(User.class);
+                Log.d("user",user.getImage_profile());
                 Glide.with(getContext()).load(user.getImage_profile()).into(image_profile);
                 username.setText(user.getFullname());
                 fullname.setText(" "+user.getFullname());
