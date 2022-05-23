@@ -24,10 +24,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
                     android:text="Hình ảnh"
                     android:textColor="@color/powder"
-                    android:textStyle="bold"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/onMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="Xem trên bản đồ"
+                    android:textColor="@color/powder"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 

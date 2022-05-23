@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.balotravel.Adapter.MyPostAdapter;
 import com.example.balotravel.EditProfileActivity;
+import com.example.balotravel.FollowersActivity;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.Model.User;
 import com.example.balotravel.R;
@@ -69,7 +70,6 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
         profileid = prefs.getString("profileid", "none");
-        Log.d("profile id change to ",profileid);
 
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
@@ -82,18 +82,19 @@ public class ProfileFragment extends Fragment {
         phoneNum = view.findViewById(R.id.tv_phone);
         myPost = view.findViewById(R.id.my_post);
         myFollowers = view.findViewById(R.id.my_followers);
-        recyclerView = view.findViewById(R.id.recycler_view);
+
+        recyclerView = view.findViewById(R.id.recycler_view_profile);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 3);
         recyclerView.setLayoutManager(mLayoutManager);
         postList = new ArrayList<>();
-        myPostAdapter = new MyPostAdapter(getContext(), postList);
+        myPostAdapter = new MyPostAdapter(this.getContext(), postList);
         recyclerView.setAdapter(myPostAdapter);
         userInfo();
         checkPost();
         checkFollowers();
         myPosts();
-
+        recyclerView.setVisibility(View.VISIBLE);
         if (profileid.equals(firebaseUser.getUid())){
             edit_profile.setText("Chỉnh sửa trang cá nhân ");
         } else {
@@ -129,21 +130,42 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        myPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowersActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "followers");
+                startActivity(intent);
+            }
+        });
+
+        following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowersActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "following");
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        postList = new ArrayList<>();
-
         // get all information of user
         currentUser = new User();
         currentUser.setUserId(mAuth.getCurrentUser().getUid());
-
-
-
-
 
     }
 
@@ -239,7 +261,6 @@ public class ProfileFragment extends Fragment {
                 int numPost=0;
                 for(DataSnapshot _snapshot: snapshot.getChildren()){
                     Post p = _snapshot.getValue(Post.class);
-                    //Log.d("My post",p.getPostPublisher() + " current user " + currentUser.getUserId()+" " + currentUser.getFullname());
                     if(p.getPostPublisher().equals(profileid)){
                         ++numPost;
                     }
@@ -254,13 +275,14 @@ public class ProfileFragment extends Fragment {
         });
     }
     private void myPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("posts");
+        DatabaseReference reference = mDatabase.child("posts");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 postList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Post post = snapshot.getValue(Post.class);
+                    post.setPostId(snapshot.getKey());
                     if (post.getPostPublisher().equals(profileid)){
                         postList.add(post);
                     }

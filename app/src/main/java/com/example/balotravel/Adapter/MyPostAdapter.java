@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,16 +33,16 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ImageViewH
 
     @NonNull
     @Override
-    public MyPostAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.photos_item, parent, false);
-        return new MyPostAdapter.ImageViewHolder(view);
+        Log.d("inside","123");
+        return new ImageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyPostAdapter.ImageViewHolder holder, final int position) {
-
+    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         final Post post = mPosts.get(position);
-
+        Log.d("post image in profile", post.getPostId()+" "+post.getPostImage());
         Glide.with(mContext).load(post.getPostImage()).into(holder.post_image);
 
         holder.post_image.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +71,8 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ImageViewH
 
         public ImageViewHolder(View itemView) {
             super(itemView);
-
-            post_image = itemView.findViewById(R.id.post_image_slider);
+            Log.d("inside","11123");
+            post_image = itemView.findViewById(R.id.post_image);
 
         }
     }

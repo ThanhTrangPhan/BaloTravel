@@ -58,15 +58,12 @@ public class HomepageFragment extends Fragment {
         DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("follows")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
-        Log.d("inside","22");
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 followingList.clear();
-                Log.d("inside","22333");
                 for(DataSnapshot _snapshot : dataSnapshot.getChildren()){
-                    Log.d("following list ",_snapshot.getKey());
                     followingList.add(_snapshot.getKey());
                 }
                 readPosts();
@@ -94,18 +91,15 @@ public class HomepageFragment extends Fragment {
                     for(String id : followingList){
                         // check id publisher is equal to id in following list
                         if(post.getPostPublisher().equals(id)){
-                            Log.d(" ",post.getPostPublisher());
                             ArrayList<Place> _p = new ArrayList<>();
                             for(DataSnapshot s:_snapshot.child("places").getChildren()){
                                 Place p = s.getValue(Place.class);
                                 ArrayList<String> imgs = new ArrayList<>();
                                 for(DataSnapshot _s : s.child("imageList").getChildren()){
                                     String str = _s.getValue(String.class);
-                                    Log.d("imaf",str);
                                     imgs.add(str);
                                 }
                                 p.setImageList(imgs);
-                                Log.d("places",p.getAddress());
                                 _p.add(p);
                             }
 

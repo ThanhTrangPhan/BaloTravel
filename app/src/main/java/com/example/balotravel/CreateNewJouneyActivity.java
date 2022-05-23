@@ -131,7 +131,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
             @Override
             public void onClick(View view) {
                 String key = mDatabase.push().getKey();
-                Log.d("post Id",key);
 
                 mDatabase.child(key).setValue(new Post("Chuyến đi của tôi", currentUser.getUserId(), "", edtJourneyDescription.getText().toString() ));
                 firebaseDB.child("likes").child(key).setValue(true);
@@ -183,7 +182,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
                                     public void onSuccess(Uri uri) {
                                         final Uri downloadUrl = uri;
                                         String imageLink = downloadUrl.toString();
-                                        Log.d("imaage upload", imageLink);
                                         mDatabase.child(key).child("places").child(String.valueOf(numberI)).child("imageList").child(String.valueOf(numberJ)).setValue(imageLink);
                                     }
                                 });
@@ -292,7 +290,6 @@ public class CreateNewJouneyActivity extends AppCompatActivity implements PlaceD
 
                 if (i == tmpList.size() - 1) {
                     routeDistance = 0;
-                    Log.d("Route: ", String.valueOf(route[0]) + String.valueOf(route[1]) + String.valueOf(route[2]) + String.valueOf(route[3]) + String.valueOf(route[4]));
                     for (int k = 1; k <= tmpList.size()-1; k++) {
                         routeDistance += distance[route[k-1]][route[k]];
                     };

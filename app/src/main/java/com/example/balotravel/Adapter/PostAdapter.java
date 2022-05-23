@@ -75,11 +75,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         final Post post = mPost.get(i);
         List<SlideModel> listPostImg = new ArrayList<>();
         ArrayList<Place> places = post.getPlaceList();
-        Log.d("post id", post.getPostId());
         for(Place _p : places){
             ArrayList<String> listImages = _p.getImageList();
             for(String _i : listImages){
-                Log.d("adpater img",_i);
                 listPostImg.add(new SlideModel(_i,_p.getName(), null));
             }
 

@@ -213,7 +213,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     }
                 });
-        Log.d("image",currentUser.getImage_profile());
         Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
         fullName.getEditText().setText(currentUser.getFullname());
 //        username.getEditText().setText(currentUser.getUsername());
