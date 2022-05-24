@@ -95,8 +95,44 @@ public class EditProfileActivity extends AppCompatActivity {
        });
 
        btnUpdate.setOnClickListener(new View.OnClickListener() {
-           @Override
+           private boolean validateFullname(){
+               String val = fullName.getEditText().getText().toString();
+               if(val.isEmpty()){
+                   fullName.setError("Bạn cần nhập trường này");
+                   return false;
+               }else{
+                   fullName.setError(null);
+                   return true;
+               }
+           }
+           private boolean validateBio(){
+               String val = bio.getEditText().getText().toString();
+               if(val.isEmpty()){
+                   bio.setError("Bạn cần nhập trường này");
+                   return false;
+               }else{
+                   bio.setError(null);
+                   return true;
+               }
+           }
+           private boolean validatePhone(){
+               String pattern = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$";
+               String val = phoneNo.getEditText().getText().toString();
+               if(val.isEmpty()){
+                   phoneNo.setError("Bạn cần nhập trường này");
+                   return false;
+               }else if(!val.matches(pattern)){
+                   phoneNo.setError("Bạn nhập sai số điện thoại");
+                   return false;
+               }else{
+                   phoneNo.setError(null);
+                   return true;
+               }
+           }
            public void onClick(View view) {
+               if(!validateFullname() | !validateBio() | !validatePhone()){
+                   return;
+               }
                UploadTask uploadTask = null;
                StorageReference mountainsRef = null;
                Log.d("image click","Image: "+isImageClicked);

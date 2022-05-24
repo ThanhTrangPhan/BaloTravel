@@ -187,7 +187,7 @@ public class ProfileFragment extends Fragment {
                 Glide.with(getContext()).load(user.getImage_profile()).into(image_profile);
                 username.setText(user.getFullname());
                 fullname.setText(" "+user.getFullname());
-                phoneNum.setText(" "+user.getPhonenumber());
+                phoneNum.setText("0"+user.getPhonenumber());
                 bio.setText(user.getBio());
 
             }
