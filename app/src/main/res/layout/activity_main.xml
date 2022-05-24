@@ -6,11 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/fragment_container"
-        android:layout_above = "@id/bottomAppBar"/>
+        android:layout_width="match_parent"
+        android:layout_height="668dp"
+        android:layout_above="@id/bottomAppBar" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"

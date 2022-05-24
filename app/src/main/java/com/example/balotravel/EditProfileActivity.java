@@ -35,6 +35,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -47,6 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
     DatabaseReference mData;
     ImageView img;
     User currentUser;
+    Uri uri;
     boolean isImageClicked =false;
 //    DatabaseReference reference;
 //    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
@@ -85,17 +88,53 @@ public class EditProfileActivity extends AppCompatActivity {
 
                isImageClicked = true;
                Log.d("image","Image: "+isImageClicked);
-               Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+               Intent intent = new Intent(Intent.ACTION_PICK);
+               intent.setType("image/*");
                startActivityForResult(intent,REQUEST_CODE_IMAGE);
            }
        });
 
        btnUpdate.setOnClickListener(new View.OnClickListener() {
-           @Override
+           private boolean validateFullname(){
+               String val = fullName.getEditText().getText().toString();
+               if(val.isEmpty()){
+                   fullName.setError("Bạn cần nhập trường này");
+                   return false;
+               }else{
+                   fullName.setError(null);
+                   return true;
+               }
+           }
+           private boolean validateBio(){
+               String val = bio.getEditText().getText().toString();
+               if(val.isEmpty()){
+                   bio.setError("Bạn cần nhập trường này");
+                   return false;
+               }else{
+                   bio.setError(null);
+                   return true;
+               }
+           }
+           private boolean validatePhone(){
+               String pattern = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$";
+               String val = phoneNo.getEditText().getText().toString();
+               if(val.isEmpty()){
+                   phoneNo.setError("Bạn cần nhập trường này");
+                   return false;
+               }else if(!val.matches(pattern)){
+                   phoneNo.setError("Bạn nhập sai số điện thoại");
+                   return false;
+               }else{
+                   phoneNo.setError(null);
+                   return true;
+               }
+           }
            public void onClick(View view) {
+               if(!validateFullname() | !validateBio() | !validatePhone()){
+                   return;
+               }
                UploadTask uploadTask = null;
                StorageReference mountainsRef = null;
-               Log.d("image click","Image: "+isImageClicked);
                if(isImageClicked){
 
                    Calendar calendar = Calendar.getInstance();
@@ -167,6 +206,7 @@ public class EditProfileActivity extends AppCompatActivity {
                    mDatabase.child("users").child(mAuth.getUid()).setValue(user);
 
                }
+               
                Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
                startActivity(intent);
            }
@@ -177,9 +217,18 @@ public class EditProfileActivity extends AppCompatActivity {
                StorageReference mountainsRef = null;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null){
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            img.setImageBitmap(bitmap);
+        if(requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data !=null && data.getData() != null){
+           uri = data.getData();
+           try {
+               Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+               img.setImageBitmap(bitmap);
+           } catch (FileNotFoundException e) {
+               e.printStackTrace();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -199,10 +248,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     }
                 });
-        Log.d("image",currentUser.getImage_profile());
         Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
         fullName.getEditText().setText(currentUser.getFullname());
-//        username.getEditText().setText(currentUser.getUsername());
         phoneNo.getEditText().setText(currentUser.getPhonenumber()+"");
         bio.getEditText().setText(currentUser.getBio());
         tvName.setText(mAuth.getCurrentUser().getEmail().toString());

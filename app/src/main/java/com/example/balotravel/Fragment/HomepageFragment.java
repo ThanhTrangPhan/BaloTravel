@@ -1,6 +1,9 @@
 package com.example.balotravel.Fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.balotravel.Adapter.PostAdapter;
+import com.example.balotravel.Model.Place;
 import com.example.balotravel.Model.Post;
 import com.example.balotravel.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,69 +29,93 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomepageFragment extends Fragment {
+    private String urlFirebase = "https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app/";
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
     private List<String> followingList;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_home, container,false);
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view_home);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         postList = new ArrayList<>();
-        postAdapter = new PostAdapter(getContext(),postList);
+        postAdapter = new PostAdapter(this.getContext(),postList);
         recyclerView.setAdapter(postAdapter);
         checkFollowing();
+        //readPosts();
         return view;
     }
 
     private void checkFollowing(){
         followingList = new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows")
+        DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("follows")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("following");
-        reference.addValueEventListener(new ValueEventListener() {
+
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 followingList.clear();
-                for(DataSnapshot _snapshot : snapshot.getChildren()){
+                for(DataSnapshot _snapshot : dataSnapshot.getChildren()){
                     followingList.add(_snapshot.getKey());
                 }
                 readPosts();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError databaseError) {}
+        };
 
-            }
-        });
+        reference.addListenerForSingleValueEvent(eventListener);
+        reference.addValueEventListener(eventListener);
     }
 
-    private  void readPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
+    private void readPosts(){
+        DatabaseReference reference = FirebaseDatabase.getInstance(urlFirebase).getReference("posts");
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
                 for(DataSnapshot _snapshot : snapshot.getChildren()){
+                    // get Post
                     Post post = _snapshot.getValue(Post.class);
+                    post.setPostId(_snapshot.getKey());
                     for(String id : followingList){
+                        // check id publisher is equal to id in following list
                         if(post.getPostPublisher().equals(id)){
+                            ArrayList<Place> _p = new ArrayList<>();
+                            for(DataSnapshot s:_snapshot.child("places").getChildren()){
+                                Place p = s.getValue(Place.class);
+                                ArrayList<String> imgs = new ArrayList<>();
+                                for(DataSnapshot _s : s.child("imageList").getChildren()){
+                                    String str = _s.getValue(String.class);
+                                    imgs.add(str);
+                                }
+                                p.setImageList(imgs);
+                                _p.add(p);
+                            }
+
+                            post.setPlaceList(_p);
                             postList.add(post);
+                            postAdapter.notifyDataSetChanged();
+                            break;
                         }
                     }
                 }
-                postAdapter.notifyDataSetChanged();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("The read failed: " + error.getCode());
             }
         });
     }

@@ -1,10 +1,15 @@
 package com.example.balotravel;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,8 +40,27 @@ public class PlaceListViewAdapter extends RecyclerView.Adapter<PlaceListViewAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Place place = placeList.get(position);
 
-        holder.placeName.setText(place.getName());
+        holder.placeName.setText(String.valueOf(holder.getBindingAdapterPosition() + 1) + ". " + place.getName());
         holder.placeAddress.setText(place.getAddress());
+
+        if (place.getImageList().size() == 0) {
+            holder.uploadedPictureLayout.setVisibility(View.INVISIBLE);
+        } else for (int i=0; i<place.getImageList().size(); i++) {
+            String selectedImage = place.getImageList().get(i);
+            ImageView imageToUpload = new ImageView(this.context);
+            imageToUpload.setImageURI(Uri.parse(selectedImage));
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(240,240);
+            params.setMargins(0, 0, 10, 0);
+            imageToUpload.setLayoutParams(params);
+            holder.uploadedPictureLayout.addView(imageToUpload);
+        }
+
+
+        // setting the margin in linearlayout
+
+
+        // adding the image in layout
+
     }
 
     @Override
@@ -48,11 +72,13 @@ public class PlaceListViewAdapter extends RecyclerView.Adapter<PlaceListViewAdap
 
         public TextView placeName;
         public TextView placeAddress;
+        public LinearLayout uploadedPictureLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             placeName = (TextView) itemView.findViewById(R.id.placeName);
             placeAddress = (TextView) itemView.findViewById(R.id.placeAddress);
+            uploadedPictureLayout = (LinearLayout) itemView.findViewById(R.id.uploadedPictureLayout);
         }
     }
 }

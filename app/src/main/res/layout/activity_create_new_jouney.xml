@@ -4,90 +4,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
     android:orientation="vertical"
     tools:context=".CreateNewJouneyActivity">
 
-    <EditText
-        android:id="@+id/placeInput"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Tìm kiếm điểm đến"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="31dp"
-            android:fontFamily="serif"
-            android:text="Điểm đến của tôi:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeInput" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/seeOnMapBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="31dp"
-            android:fontFamily="serif"
-            android:text="Xem trên bản đồ"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeInput" />
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/coverImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dulich"
+                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                <Button
+                    android:id="@+id/changeCoverImgBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Thay đổi ảnh bìa"
+                    android:textColor="#E37222"
+                    android:textSize="10dp"
+                    app:icon="@android:drawable/ic_menu_gallery"
+                    app:iconPadding="2dp"
+                    app:iconTint="#e37222" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/gradient_background"
+                    android:fontFamily="sans-serif-black"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="90dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="15dp"
+                    android:textAlignment="center"
+                    android:textColor="#e37222"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@android:color/transparent"
+                    android:text="Chuyến đi của tôi"
+                    android:textColor="#e37222"
+                    app:icon="@android:drawable/ic_menu_edit"
+                    app:iconGravity="end"
+                    app:iconPadding="14dp"
+                    app:iconSize="20dp" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activePlacesView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:minHeight="100dp" />
+            </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif"
-        android:text="Chia sẻ thêm về chuyến đi:"
-        android:textSize="16sp"
-        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/journeyDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        tools:ignore="SpeakableTextPresentCheck" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="104dp"
-        android:layout_height="48dp"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="SAVE"
-        android:textColor="#212121"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <Button
+                    android:id="@+id/seeOnMapBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="0dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="serif"
+                    android:text="Xem trên bản đồ"
+                    android:textColor="#E37222"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/map_marker"
+                    app:iconPadding="2dp"
+                    app:iconSize="16dp"
+                    app:iconTint="#e37222"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <EditText
+                    android:id="@+id/placeInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:ems="10"
+                    android:hint="Thêm điểm đến"
+                    android:inputType="textPersonName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </RelativeLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activePlacesView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/smartSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="Sắp xếp thông minh"
+                app:icon="@android:drawable/ic_dialog_map" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="serif"
+                android:text="Chia sẻ thêm về chuyến đi:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/journeyDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <Button
+                android:id="@+id/saveBtn"
+                android:layout_width="104dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="16dp"
+                android:text="LƯU LẠI"
+                android:textColor="#212121"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

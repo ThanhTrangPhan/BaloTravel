@@ -5,6 +5,9 @@ public class Comment {
     private String publisher;
     private String commentid;
 
+    public Comment() {
+    }
+
     public Comment(String comment, String publisher, String commentid) {
         this.comment = comment;
         this.publisher = publisher;

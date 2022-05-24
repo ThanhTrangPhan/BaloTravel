@@ -7,20 +7,20 @@ public class Post {
     private String postId;
     private String postPublisher;
     private String postImage;
-    private String name;
+    private String nameCollection;
     private String description;
     private ArrayList <Place> placeList;
 
-    public Post(String name, String postPublisher, String postImage, String description, ArrayList <Place> placeList) {
-        this.name = name;
+    public Post(String nameCollection, String postPublisher, String postImage, String description, ArrayList <Place> placeList) {
+        this.nameCollection = nameCollection;
         this.postPublisher = postPublisher;
         this.postImage = postImage;
         this.description = description;
         this.placeList = placeList;
     }
 
-    public Post(String name, String postPublisher, String postImage, String description) {
-        this.name = name;
+    public Post(String nameCollection, String postPublisher, String postImage, String description) {
+        this.nameCollection = nameCollection;
         this.postPublisher = postPublisher;
         this.postImage = postImage;
         this.description = description;
@@ -54,12 +54,12 @@ public class Post {
         this.postImage = postImage;
     }
 
-    public String getName() {
-        return name;
+    public String getNameCollection() {
+        return nameCollection;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameCollection(String nameCollection) {
+        this.nameCollection = nameCollection;
     }
 
     public String getDescription() {
