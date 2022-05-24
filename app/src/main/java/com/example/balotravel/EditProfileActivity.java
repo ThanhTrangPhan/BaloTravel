@@ -135,7 +135,6 @@ public class EditProfileActivity extends AppCompatActivity {
                }
                UploadTask uploadTask = null;
                StorageReference mountainsRef = null;
-               Log.d("image click","Image: "+isImageClicked);
                if(isImageClicked){
 
                    Calendar calendar = Calendar.getInstance();
@@ -249,10 +248,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     }
                 });
-        Log.d("uri image",currentUser.getImage_profile());
         Glide.with(EditProfileActivity.this).load(Uri.parse(currentUser.getImage_profile())).into(img);
         fullName.getEditText().setText(currentUser.getFullname());
-//        username.getEditText().setText(currentUser.getUsername());
         phoneNo.getEditText().setText(currentUser.getPhonenumber()+"");
         bio.getEditText().setText(currentUser.getBio());
         tvName.setText(mAuth.getCurrentUser().getEmail().toString());
