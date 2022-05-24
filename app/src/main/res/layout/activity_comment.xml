@@ -13,11 +13,11 @@
         android:background="?android:attr/windowBackground"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recycler_view"
         android:layout_above="@id/bottom"
-        android:layout_below="@id/toolbar"/>
+        android:layout_below="@id/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,8 +1,11 @@
 package com.example.balotravel.Model;
 
+import android.net.Uri;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Place implements Serializable {
     private String id;
@@ -10,17 +13,19 @@ public class Place implements Serializable {
     private String address;
     private Double latitude;
     private Double longitude;
- //   private LatLng latLng;
     private String startAt;
     private String finishAt;
+    //private LatLng latLng;
+    private ArrayList <String> imageList = new ArrayList<>();
 
-    public Place(String id, String name, String address, LatLng latLng) {
+    public Place(String id, String name, String address, LatLng latLng, ArrayList <String> imageList) {
         this.id = id;
         this.name = name;
         this.address = address;
   //      this.latLng = latLng;
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
+        this.imageList = imageList;
     }
 
     public Place(String id, String name, String address, LatLng latLng, String startAt, String finishAt) {
@@ -28,6 +33,8 @@ public class Place implements Serializable {
         this.name = name;
         this.address = address;
 //        this.latLng = latLng;
+        this.latitude = latLng.latitude;
+        this.longitude = latLng.longitude;
         this.startAt = startAt;
         this.finishAt = finishAt;
     }
@@ -91,6 +98,17 @@ public class Place implements Serializable {
         this.longitude = longitude;
     }
 
+    public ArrayList<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<String> imageList) {
+        this.imageList = imageList;
+    }
+
+    public void addNewImage(Uri newImg) {
+
+    }
 //    public LatLng getLatLng() {
 //        return latLng;
 //    }

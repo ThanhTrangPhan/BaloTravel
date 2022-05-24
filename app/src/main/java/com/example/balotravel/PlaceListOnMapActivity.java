@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.balotravel.databinding.ActivityPlaceListOnMapBinding;
+import com.google.firebase.database.core.utilities.Utilities;
 
 import java.util.ArrayList;
 
@@ -95,7 +96,7 @@ public class PlaceListOnMapActivity extends FragmentActivity implements OnMapRea
             builder.include(sydney);
         }
         LatLngBounds bounds = builder.build();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels,300));
 
     }
 }

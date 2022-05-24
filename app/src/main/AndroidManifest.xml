@@ -10,10 +10,14 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.BaloTravel">
-
+        <activity android:name=".PlaceListOnMapActivity"
+            android:exported="false"></activity>
+        <activity android:name=".CommentActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".CreateNewJouneyActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Thêm chuyến đi mới"/>
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -40,7 +44,7 @@
         <meta-data
 
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBT5Hyl1QUbYmPb2vNsE4-xxJl5K0LDuMk"/>
+            android:value="AIzaSyBhj_LHnpq3EGbr5fGHpj0ORcDx7Rb-B_E"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -51,5 +55,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
 </manifest>

@@ -165,15 +165,18 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/full_name_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:layout_gravity="center"
-                    android:id="@+id/full_name_profile"
-                    android:textStyle="bold"
+                    android:drawableLeft="@drawable/ic_baseline_supervised_user_circle_24"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textColor="@color/black"/>
+                    android:textStyle="bold" />
+
                 <TextView
+                    android:drawableLeft="@drawable/ic_baseline_phone_24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
@@ -203,7 +206,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/my_fotos"
+                    android:id="@+id/my_post"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -213,7 +216,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/saved_fotos"
+                    android:id="@+id/my_followers"
                     style="?android:attr/buttonBarButtonStyle"
                     android:padding="5dp"
                     android:layout_width="0dp"
@@ -227,7 +230,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler_view"/>
+                android:id="@+id/recycler_view_profile"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
