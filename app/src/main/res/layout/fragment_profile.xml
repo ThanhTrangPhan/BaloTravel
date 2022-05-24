@@ -144,6 +144,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
                         android:fontFamily="sans-serif"
+                        android:textAllCaps="false"
+                        android:textColor="#ffff"
                         android:includeFontPadding="false"
                         android:text="Chỉnh sửa trang cá nhân" />
                 </LinearLayout>
@@ -216,7 +218,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/my_followers"
+                    android:id="@+id/my_savedpost"
                     style="?android:attr/buttonBarButtonStyle"
                     android:padding="5dp"
                     android:layout_width="0dp"
