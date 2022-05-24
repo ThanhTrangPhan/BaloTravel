@@ -103,7 +103,10 @@ public class SearchFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
-                    userList.add(user);
+                    if(!userList.contains(user)){
+                        userList.add(user);
+                    }
+
                 }
 
                 userAdapter.notifyDataSetChanged();
