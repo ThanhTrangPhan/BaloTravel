@@ -77,17 +77,13 @@ public class SearchFragment extends Fragment {
         Query query = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users").orderByChild("fullname")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
-        Query query2 = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users").orderByChild("username")
-                .startAt(s)
-                .endAt(s+"\uf8ff");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                    userList.add(user);
+                    userList.add(snapshot.getValue(User.class));
                 }
 
                 userAdapter.notifyDataSetChanged();
@@ -98,12 +94,17 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
+        Query query2 = FirebaseDatabase.getInstance("https://balotravel-9a424-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users").orderByChild("username")
+                .startAt(s)
+                .endAt(s+"\uf8ff");
         query2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(userList.isEmpty()) userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
-                    if(!userList.contains(user)){
+                    if(!isExisted(userList,user)){
                         userList.add(user);
                     }
 
@@ -117,6 +118,14 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
+    }
+
+    private boolean isExisted(List<User> list,User user) {
+        for(User u: list){
+            if(u.getUsername().equals(user.getUsername())) return true;
+        }
+        return false;
     }
 
     private void readUsers() {

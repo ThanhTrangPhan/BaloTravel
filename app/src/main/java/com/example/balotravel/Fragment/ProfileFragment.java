@@ -52,10 +52,14 @@ public class ProfileFragment extends Fragment {
     FirebaseUser firebaseUser;
     String profileid;
     User user;
-    ImageButton myPost,myFollowers;
+    ImageButton myPost,myPostSaved;
     private RecyclerView recyclerView;
     private MyPostAdapter myPostAdapter;
     private List<Post> postList;
+
+    private RecyclerView recyclerViewSaved;
+    private MyPostAdapter myPostAdapterSaved;
+    private List<Post> postSavedList;
 
     protected FirebaseAuth mAuth = FirebaseAuth.getInstance();
     protected DatabaseReference mDatabase = FirebaseDatabase.getInstance(db).getReference();
@@ -81,7 +85,7 @@ public class ProfileFragment extends Fragment {
         username = view.findViewById(R.id.username);
         phoneNum = view.findViewById(R.id.tv_phone);
         myPost = view.findViewById(R.id.my_post);
-        myFollowers = view.findViewById(R.id.my_followers);
+        myPostSaved = view.findViewById(R.id.my_savedpost);
 
         recyclerView = view.findViewById(R.id.recycler_view_profile);
         recyclerView.setHasFixedSize(true);
@@ -90,16 +94,45 @@ public class ProfileFragment extends Fragment {
         postList = new ArrayList<>();
         myPostAdapter = new MyPostAdapter(this.getContext(), postList);
         recyclerView.setAdapter(myPostAdapter);
+
+        recyclerViewSaved = view.findViewById(R.id.recycler_view_save);
+        recyclerViewSaved.setHasFixedSize(true);
+        LinearLayoutManager LayoutManager = new GridLayoutManager(this.getContext(), 3);
+        recyclerViewSaved.setLayoutManager(LayoutManager);
+        postSavedList = new ArrayList<>();
+        myPostAdapterSaved = new MyPostAdapter(this.getContext(), postSavedList);
+        recyclerViewSaved.setAdapter(myPostAdapterSaved);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerViewSaved.setVisibility(View.GONE);
+
+        myPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerViewSaved.setVisibility(View.GONE);
+            }
+        });
+
+        myPostSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView.setVisibility(View.GONE);
+                recyclerViewSaved.setVisibility(View.VISIBLE);
+            }
+        });
+
         userInfo();
         checkPost();
         checkFollowers();
         myPosts();
+        myPostSaved();
         recyclerView.setVisibility(View.VISIBLE);
         if (profileid.equals(firebaseUser.getUid())){
             edit_profile.setText("Chỉnh sửa trang cá nhân");
         } else {
             checkFollow();
-            myFollowers.setVisibility(View.GONE);
+            myPostSaved.setVisibility(View.GONE);
         }
 
         edit_profile.setOnClickListener(new View.OnClickListener() {
@@ -131,12 +164,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        myPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView.setVisibility(View.VISIBLE);
-            }
-        });
 
         followers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -291,28 +318,50 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-//    private void readSaves(){
-//        DatabaseReference reference = FirebaseDatabase.getInstance(db).getReference("posts");
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                postList_saves.clear();
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                    Post post = snapshot.getValue(Post.class);
-//
-//                    for (String id : my) {
-//                        if (post.getPostid().equals(id)) {
-//                            postList_saves.add(post);
-//                        }
-//                    }
-//                }
-//                myFotosAdapter_saves.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
+    private void myPostSaved(){
+        List<String> mySaves = new ArrayList<>();
+        DatabaseReference reference = mDatabase.child("saves").child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    String p = snapshot.getKey();
+                    mySaves.add(p);
+                }
+                Log.d("size", String.valueOf(mySaves.size()));
+                readSaves(mySaves);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void readSaves(List<String> mySaves){
+        DatabaseReference reference = mDatabase.child("posts");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postSavedList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Post post = snapshot.getValue(Post.class);
+                    post.setPostId(snapshot.getKey());
+                    for (String p : mySaves ) {
+                        if (post.getPostId().equals(p)) {
+                            Log.d("save post",post.getPostId()+" "+post.getPostImage());
+                            postSavedList.add(post);
+                        }
+                    }
+                }
+                myPostAdapterSaved.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
