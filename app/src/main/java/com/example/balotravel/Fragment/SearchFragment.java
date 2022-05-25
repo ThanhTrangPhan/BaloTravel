@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.balotravel.Adapter.UserAdapter;
 import com.example.balotravel.Model.User;
@@ -38,6 +39,7 @@ public class SearchFragment extends Fragment {
     private List<User> userList;
 
     EditText search_bar;
+    TextView option_user,option_place,option_post;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +47,10 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recyclerView = view.findViewById(R.id.recycler_view);
+        option_place = view.findViewById(R.id.option_place);
+        option_post = view.findViewById(R.id.option_post);
+        option_user = view.findViewById(R.id.option_user);
+        option_user.setFocusable(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         search_bar = view.findViewById(R.id.search_bar);
@@ -101,8 +107,7 @@ public class SearchFragment extends Fragment {
         query2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(userList.isEmpty()) userList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
                     if(!isExisted(userList,user)){
                         userList.add(user);

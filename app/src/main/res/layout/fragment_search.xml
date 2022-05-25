@@ -43,38 +43,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
+                <TextView
                     android:id="@+id/option_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:backgroundTint="@color/tan"
+                    android:layout_marginEnd="15dp"
+                    android:background="@color/selector_button"
+                    android:padding="10dp"
                     android:textAllCaps="false"
                     android:text="Người dùng"
+                    android:enabled="true"
+
                     android:textColor="@color/black" />
 
-                <Button
+                <TextView
                     android:id="@+id/option_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/tan"
                     android:text="Bài đăng"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
+                    android:background="@color/selector_button"
+                    android:padding="10dp"
+
                     android:textAllCaps="false"
                     android:textColor="@color/black"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_marginEnd="15dp"/>
 
-                <Button
+                <TextView
                     android:id="@+id/option_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/tan"
                     android:text="Địa điểm"
+                    android:background="@color/selector_button"
+                    android:padding="10dp"
                     android:textAllCaps="false"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:textColor="@color/black" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.appbar.AppBarLayout>
